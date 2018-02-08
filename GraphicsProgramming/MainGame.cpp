@@ -126,6 +126,10 @@ void MainGame::draw()
 
 	_colourShader.unbindShader();
 
+	/*Clears everything that has been drawn to the screen and switches
+	to the windows via double buffering*/
+	SDL_GL_SwapWindow(_gameWindow);
+
 	/********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************
 
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -138,9 +142,5 @@ void MainGame::draw()
 	glVertex2f(1, 1);
 
 	glEnd();*/
-
-	/*Clears everything that has been drawn to the screen and switches
-	to the windows via double buffering*/
-	SDL_GL_SwapWindow(_gameWindow);
 }
 

@@ -5,7 +5,7 @@ using namespace std;
 
 Sprite::Sprite()
 {
-	GLuint _vertexBO = 0;
+	GLuint _vertexBufferObject = 0;
 }
 
 Sprite::~Sprite()
@@ -26,7 +26,7 @@ void Sprite::init(float x, float y, float  width, float height)
 	//Only generating the Vertex Buffer Object if it hasn't already been generated
 	if (_vertexBufferObject = 0)
 	{
-		//Creating a Vertex Buffer Object and assigning it to _vertexBO
+		//Creating a Vertex Buffer Object and assigning it to _vertexBufferObject
 		glGenBuffers(1, &_vertexBufferObject);
 	}
 
@@ -56,14 +56,13 @@ void Sprite::init(float x, float y, float  width, float height)
 
 void Sprite::draw()
 {
-
 	glDisable(GL_CULL_FACE);
 
 	//Tells OpenGL this is the current active buffer
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 	glEnableVertexAttribArray(0);
 	//Pointing OpenGL to the start of the data to be used
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_TRUE, 0, 0);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDisableVertexAttribArray(0);
 

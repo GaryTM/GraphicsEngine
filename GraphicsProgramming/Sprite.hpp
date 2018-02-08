@@ -17,7 +17,7 @@ private:
 	int _width;
 	int _height;
 	/*An ID to store the vertex buffer object
-	Using GLuint guarantees the VBO will be 32 bit*/
+	Using GLuint as opposed to unsigned int guarantees the VBO will be 32 bit*/
 	GLuint _vertexBufferObject;
 };
 
