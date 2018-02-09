@@ -23,7 +23,7 @@ void MainGame::runGame()
 {
 	initSystems();
 
-	_sprite.init(0.0f, 0.0f, 1.0f, 1.0f);
+	_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
 
 	gameLoop();
 }
@@ -73,7 +73,8 @@ void MainGame::initShaders()
 	//Compiling the vertex and fragment shader from file
 	_colourShader.shaderCompiler("Shaders/Shader.vert", "Shaders/Shader.frag");
 	//Adding the attributes
-	_colourShader.createAttribute("vertexPos");
+	_colourShader.createAttribute("vertexPosition");
+	_colourShader.createAttribute("vertexColour");
 	//Linking the shaders
 	_colourShader.shaderLinker();
 }

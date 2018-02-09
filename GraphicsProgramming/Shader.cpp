@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/*These privates variables are being initialised using an inistialisation list
+which only works for constructors, but is faster than adding 
+_numAttributes = 0; etc. to the body of the constructor. REMEMBER THIS!*/
 Shader::Shader() : _numAttributes(0), _program(0), _vertShader(0), _fragShader(0)
 {
 }
@@ -17,6 +20,9 @@ Shader::~Shader()
 
 void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShaderPath)
 {
+	//Creating a new program and assigning it to program id
+	_program = glCreateProgram();
+
 	//Specifies that _vertShaderID is a GL_VERTEX_SHADER
 	_vertShader = glCreateShader(GL_VERTEX_SHADER);
 	if (_vertShader == 0)
@@ -35,9 +41,6 @@ void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShad
 }
 void Shader::shaderLinker()
 {
-	//Creating a new program and assigning it to program id
-	_program = glCreateProgram();
-
 	//Attaching the shaders to the program just created
 	glAttachShader(_program, _vertShader);
 	glAttachShader(_program, _fragShader);

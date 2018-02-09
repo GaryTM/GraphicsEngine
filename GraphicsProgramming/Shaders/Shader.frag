@@ -1,9 +1,12 @@
-#version 330
+#version 130
+
+//Inputting the fragment colour from the vertex shader
+in vec4 fragmentColour;
 
 //Outputting the RGB colour
-out vec3 colour;
+out vec4 colour;
 
 void main()
 {
-	colour = vec3(1.0, 0.0, 0.0);
+	colour = fragmentColour;
 }

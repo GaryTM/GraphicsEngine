@@ -1,5 +1,8 @@
 #include <iostream>
+#include<cstddef>
+
 #include "Sprite.hpp"
+#include "Vertex.hpp"
 
 using namespace std;
 
@@ -20,7 +23,7 @@ void Sprite::init(float x, float y, float  width, float height)
 {
 	_x = x;
 	_y = y;
-	_width = width;
+	_width = width;  
 	_height = height;
 
 	//Only generating the Vertex Buffer Object if it hasn't already been generated
@@ -29,22 +32,35 @@ void Sprite::init(float x, float y, float  width, float height)
 		//Creating a Vertex Buffer Object and assigning it to _vertexBufferObject
 		glGenBuffers(1, &_vertexBufferObject);
 	}
+	/*An array to store the vertex data. It holds 6 vertices
+	and each vertex requires 2 floats for the x and y coordinate values*/
+	Vertex vertexData[6];
 
-	float vertexData[12];
+	vertexData[0].position.x = x + width;
+	vertexData[0].position.y = y + height;
 
-	vertexData[0] = x + width;
-	vertexData[1] = y + height;
-	vertexData[2] = x;
-	vertexData[3] = y + height;
-	vertexData[4] = x;
-	vertexData[5] = y;
+	vertexData[1].position.x = x;
+	vertexData[1].position.y = y + height;
 
-	vertexData[6] = x;
-	vertexData[7] = y;
-	vertexData[8] = x + width;
-	vertexData[9] = y;
-	vertexData[10] = x + width;
-	vertexData[11] = y + height;
+	vertexData[2].position.x = x;
+	vertexData[2].position.y = y;
+
+	vertexData[3].position.x = x;
+	vertexData[3].position.y = y;
+
+	vertexData[4].position.x = x + width;
+	vertexData[4].position.y = y;
+
+	vertexData[5].position.x = x + width;
+	vertexData[5].position.y = y + height;
+
+	for (int i = 0; i < 6; i++)
+	{
+		vertexData[i].colour.r = 255;
+		vertexData[i].colour.g = 0;
+		vertexData[i].colour.b = 255;
+		vertexData[i].colour.a = 255;
+	}
 
 	//Binds the buffer
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
@@ -61,8 +77,15 @@ void Sprite::draw()
 	//Tells OpenGL this is the current active buffer
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
 	glEnableVertexAttribArray(0);
-	//Pointing OpenGL to the start of the data to be used
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_TRUE, 0, 0);
+	/*Pointing OpenGL to the start of the data to be used
+	This one in particular is used for the position
+	The final parameter is 0 because in the Vertex struct
+	position has nothing before it. Using offsetof means that
+	if the value/position ever changes it won't need to be changed here
+	It's for accuracy, yo!*/
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+	//Same as above for the colour
+	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, colour));
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDisableVertexAttribArray(0);
 
