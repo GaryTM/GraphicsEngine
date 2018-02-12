@@ -19,5 +19,7 @@ private:
 	/*An ID to store the vertex buffer object
 	Using GLuint as opposed to unsigned int guarantees the VBO will be 32 bit*/
 	GLuint _vertexBufferObject;
+	GLuint _vertexArrayObject;
+	GLuint _elementBufferObject;
 };
 
