@@ -14,7 +14,7 @@ public:
 	MainGame();
 	~MainGame();
 	//Used to run the game.. surprisingly enough.
-	void runGame(); 
+	void run(); 
 	
 
 private:
@@ -36,5 +36,7 @@ private:
 	GameState _currentGameState;
 	Sprite _sprite;
 	Shader _colourShader;
+
+	float _time;
 };
 

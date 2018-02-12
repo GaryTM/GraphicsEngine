@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	//Creating an instance on the MainGame class named game
 	MainGame game;
 	//RUN THE GAME!
-	game.runGame();
+	game.run();
 
 	return 0;
 }

@@ -6,9 +6,10 @@
 
 using namespace std;
 
-Sprite::Sprite()
+Sprite::Sprite() :
+	_vertexBufferObject(0)
 {
-	GLuint _vertexBufferObject = 0;
+	  
 }
 
 Sprite::~Sprite()
@@ -75,6 +76,8 @@ void Sprite::init(float x, float y, float  width, float height)
 	vertexData[3].colour.b = 0;
 	vertexData[3].colour.a = 255;
 
+	/*Indexing using an elements array allows the vertexData array to be cut 
+	in half meaning less information has to be processed, meaning the CPU/GPU is happier!*/
 	GLuint elements[] =
 	{
 		0, 1, 2,

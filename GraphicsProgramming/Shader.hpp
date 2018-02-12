@@ -18,13 +18,15 @@ public:
 	void bindShader();
 	//Allows for a program to be unbound... wow!
 	void unbindShader();
+
+	GLuint getUniform(const string uniformName);
 private:
 	//Stores how many attributes the program currently has
 	int _numAttributes;
 	//A generic way to compile multiple types of shaders
 	void compileShader(const string& shaderFilePath, GLuint id);
 	//This stores the final shader program
-	GLuint _program;
+	GLuint _shaderProgram;
 	//This stores the vertex shader
 	GLuint _vertShader;
 	//This stores the fragment shader

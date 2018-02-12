@@ -1,34 +1,34 @@
 #pragma once
 
 #include<GL\glew.h>
+
+//A struct of type position to handle the position of vertices.	
+struct Position
+{
+	float x;
+	float y;
+};
+
+//The colour struct uses the exact same principles as struct Position
+struct Colour
+{
+	/*Using GLubyte here guarantees that each colour and the alpha will
+	only be one byte and since there is four it will align correctly*/
+	GLubyte r;
+	GLubyte g;
+	GLubyte b;
+	GLubyte a;
+};
+
 //The Vertex struct is used purely to hold data
 struct Vertex
 {
-	/*A struct of type position to handle the position of vertices.
-	Storing a struct or class within another of the same type is called composition*/
-	struct Position
-	{
-		float x;
-		float y;
-	}
-	/*Adding this lower case position outside the body of the struct
-	but before the semi-colon creates an instance of the struct meaning
-	something.position.x/y will be a valid call*/
-	position;
+	//An instance of the position struct
+	Position position;
+	//An instance of the colour struct
+	Colour colour;
 
-	//The colour struct uses the exact same principles as struct Position
-	struct Colour
-	{
-		/*Using GLubyte here guarantees that each colour and the alpha will
-		only be one byte and since there is four it will align correctly*/
-		GLubyte r;
-		GLubyte g;
-		GLubyte b;
-		GLubyte a;
-	}
-	colour;
 
-	
 	//*********************************** GOOD TO REMEMBER ***********************************
 
 	/*Adding this additional byte of padding would mean the Vertex struct would be

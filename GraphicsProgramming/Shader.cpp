@@ -10,7 +10,11 @@ using namespace std;
 /*These privates variables are being initialised using an inistialisation list
 which only works for constructors, but is faster than adding 
 _numAttributes = 0; etc. to the body of the constructor. REMEMBER THIS!*/
-Shader::Shader() : _numAttributes(0), _program(0), _vertShader(0), _fragShader(0)
+Shader::Shader() :
+	_numAttributes(0),
+	_shaderProgram(0),
+	_vertShader(0),
+	_fragShader(0)
 {
 }
 
@@ -21,7 +25,7 @@ Shader::~Shader()
 void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShaderPath)
 {
 	//Creating a new program and assigning it to program id
-	_program = glCreateProgram();
+	_shaderProgram = glCreateProgram();
 
 	//Specifies that _vertShaderID is a GL_VERTEX_SHADER
 	_vertShader = glCreateShader(GL_VERTEX_SHADER);
@@ -42,25 +46,25 @@ void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShad
 void Shader::shaderLinker()
 {
 	//Attaching the shaders to the program just created
-	glAttachShader(_program, _vertShader);
-	glAttachShader(_program, _fragShader);
+	glAttachShader(_shaderProgram, _vertShader);
+	glAttachShader(_shaderProgram, _fragShader);
 
 	//Linking the program
-	glLinkProgram(_program);
+	glLinkProgram(_shaderProgram);
 
 	GLint isLinked = 0;
 	//Checking the program is linked using GL_LINK_STATUS and throwing errors where neccessary
-	glGetProgramiv(_program, GL_LINK_STATUS, &isLinked);
+	glGetProgramiv(_shaderProgram, GL_LINK_STATUS, &isLinked);
 	if (isLinked == GL_FALSE)
 	{
 		GLint maxLength = 0;
-		glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &maxLength);
+		glGetProgramiv(_shaderProgram, GL_INFO_LOG_LENGTH, &maxLength);
 
 		vector<char> errorLog(maxLength);
-		glGetProgramInfoLog(_program, maxLength, &maxLength, &errorLog[0]);
+		glGetProgramInfoLog(_shaderProgram, maxLength, &maxLength, &errorLog[0]);
 
 		//Deleting the program when it is no longer required
-		glDeleteProgram(_program);
+		glDeleteProgram(_shaderProgram);
 		//Deleting the shaders when they are no longer required (freeing up resources, yo!)
 		glDeleteShader(_vertShader);
 		glDeleteShader(_fragShader);
@@ -70,18 +74,18 @@ void Shader::shaderLinker()
 	}
 
 	//Ensuring the shaders are detached
-	glDetachShader(_program, _vertShader);
-	glDetachShader(_program, _fragShader);
+	glDetachShader(_shaderProgram, _vertShader);
+	glDetachShader(_shaderProgram, _fragShader);
 }
 
 void Shader::createAttribute(const string& attributeName)
 {
-	glBindAttribLocation(_program, _numAttributes++, attributeName.c_str());
+	glBindAttribLocation(_shaderProgram, _numAttributes++, attributeName.c_str());
 }
 
 void Shader::bindShader()
 {
-	glUseProgram(_program);
+	glUseProgram(_shaderProgram);
 	//Loops through the attributes and enables the ones that are bound
 	for (int i = 0; i < _numAttributes; i++)
 	{
@@ -98,6 +102,17 @@ void Shader::unbindShader()
 	{
 		glDisableVertexAttribArray(i);
 	}
+}
+//Gets the location of the uniform with some error checking to avoid invalidity
+GLuint Shader::getUniform(const string uniformName)
+{
+	GLuint uniformLocation =  glGetUniformLocation(_shaderProgram, uniformName.c_str());
+
+	if (uniformLocation == GL_INVALID_INDEX)
+	{
+		fatalError("Uniform" + uniformName + "is invalid!");
+	}
+	return uniformLocation;
 }
 
 void Shader::compileShader(const string& shaderFilePath, GLuint id)

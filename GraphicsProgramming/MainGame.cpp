@@ -5,21 +5,20 @@
 
 using namespace std;
 
-MainGame::MainGame()
+MainGame::MainGame() : 
+	_gameWindow(nullptr),
+	_currentGameState(GameState::PLAY),
+	_screenWidth(1280),
+	_screenHeight(720),
+	_time(0.0f)
 {
-	//Initialises to null pointer for clarity of bugs
-	_gameWindow = nullptr; 
-	_currentGameState = GameState::PLAY;
-	//720p, best resolution!
-	_screenWidth = 1280;
-	_screenHeight = 720; 
 }
 
 MainGame::~MainGame()
 {
 }
 
-void MainGame::runGame()
+void MainGame::run()
 {
 	initSystems();
 
@@ -51,6 +50,7 @@ void MainGame::initSystems()
 	{
 		fatalError("SDL_GLContext failed to create..");
 	}
+
 	//Checks for errors when initialising GLEW
 	GLenum error = glewInit();
 
@@ -85,6 +85,7 @@ void MainGame::gameLoop()
 	while (_currentGameState != GameState::EXIT)
 	{
 		processInput();
+		_time += 0.001f;
 		draw();
 	}
 }
@@ -123,6 +124,10 @@ void MainGame::draw()
 
 	_colourShader.bindShader();
 
+	//Setting the uniform before drawing
+	GLuint timeLocation = _colourShader.getUniform("time");
+	//Sending the variable (1f symbolises there is 1 Float)
+	glUniform1f(timeLocation, _time);
 	_sprite.draw();
 
 	_colourShader.unbindShader();
