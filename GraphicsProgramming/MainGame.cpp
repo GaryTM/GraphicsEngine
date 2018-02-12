@@ -125,7 +125,7 @@ void MainGame::draw()
 	_colourShader.bindShader();
 
 	//Setting the uniform before drawing
-	GLuint timeLocation = _colourShader.getUniform("time");
+	GLuint timeLocation = _colourShader.getUniformLocation("time");
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 	_sprite.draw();

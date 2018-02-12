@@ -19,7 +19,7 @@ public:
 	//Allows for a program to be unbound... wow!
 	void unbindShader();
 
-	GLuint getUniform(const string uniformName);
+	GLint getUniformLocation(const string uniformName);
 private:
 	//Stores how many attributes the program currently has
 	int _numAttributes;

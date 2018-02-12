@@ -3,6 +3,8 @@
 //Inputting the fragment colour from the vertex shader
 in vec4 fragmentColour;
 
+in vec2 fragmentPosition;
+
 //Outputting the RGB colour
 out vec4 colour;
 
@@ -12,7 +14,7 @@ uniform float time;
 
 void main()
 {
-	colour = fragmentColour + vec4 (1.0 * cos(time) + 1.0 * 0.5,
-									1.0 * cos(time) + 2.0 * 0.5,
-									1.0 * sin(time) + 1.0 * 0.5, 0.0);
+	colour = vec4 (fragmentColour.r * (cos(fragmentPosition.x * 2.0 + time) + 1.0) * 0.5,
+					fragmentColour.g * (cos(fragmentPosition.y * 4.0 + time) + 1.0) * 0.5,
+					fragmentColour.b * (cos(fragmentPosition.x * 1.5 + time) + 1.0) * 0.5, fragmentColour.a);
 }

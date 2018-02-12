@@ -11,6 +11,8 @@ in vec4 vertexColour;
 //stage and then the fragment shader will use the mixed colour
 out vec4 fragmentColour;
 
+out vec2 fragmentPosition;
+
 //The main program for the vertex shader
 void main()
 {
@@ -21,6 +23,8 @@ void main()
 	//This indicates that all coordinates are normalised
 	gl_Position.w = 1.0;
 	
-	//This sets te fragment colour to equal the vertex colour
+	//This sets the fragment colour to equal the vertex colour
 	fragmentColour = vertexColour;
+
+	fragmentPosition = vertexPosition;
 }

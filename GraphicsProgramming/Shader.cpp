@@ -104,9 +104,9 @@ void Shader::unbindShader()
 	}
 }
 //Gets the location of the uniform with some error checking to avoid invalidity
-GLuint Shader::getUniform(const string uniformName)
+GLint Shader::getUniformLocation(const string uniformName)
 {
-	GLuint uniformLocation =  glGetUniformLocation(_shaderProgram, uniformName.c_str());
+	GLint uniformLocation =  glGetUniformLocation(_shaderProgram, uniformName.c_str());
 
 	if (uniformLocation == GL_INVALID_INDEX)
 	{

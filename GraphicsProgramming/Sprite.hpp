@@ -5,12 +5,10 @@ class Sprite
 public:
 	Sprite();
 	~Sprite();
-
 	//Initialises the sprite with coordinates and size
 	void init(float x, float y, float  width, float height);
 	//Used to draw the Sprites!
 	void draw();
-
 private:
 	int _x;
 	int _y;
