@@ -154,7 +154,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Errors.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -166,7 +168,10 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.hpp" />
+    <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Errors.hpp" />
+    <ClInclude Include="Input.hpp" />
     <ClInclude Include="IOManager.hpp" />
     <ClInclude Include="MainGame.hpp" />
     <ClInclude Include="Model.hpp" />
