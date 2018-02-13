@@ -10,7 +10,8 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &_textureHandler); // number of and address of textures
+	//Deleting the texture based on number and address
+	glDeleteTextures(1, &_textureHandler);
 }
 
 void Texture::init(string& fileName)
