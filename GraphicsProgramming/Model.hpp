@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Transform.hpp"
+#include "Shader.hpp"
+
 #include <glm\glm.hpp>
 #include <GL\glew.h>
 #include <string>
@@ -65,7 +68,9 @@ public:
 	Model();
 	~Model();
 
-	void draw();
+	Transform transform;
+	Shader* shader;
+
 	void init(Vertex3D* vertices, unsigned int verticeCount, unsigned int* indices, unsigned int indiceCount);
 	//Used to load a model from file
 	void loadModel(const string& filename);
@@ -77,6 +82,8 @@ public:
 	vec3 getSpherePosition() { return _modelCollisionSphere.GetSpherePosition(); }
 	//Getter for the sphere radius
 	float getSphereRadius() { return _modelCollisionSphere.GetSphereRadius(); }
+	void draw();
+	void draw(const Camera& mainCamera);
 
 private:
 	/*An enum to return values based on position, texture coordinates etc.
@@ -89,6 +96,7 @@ private:
 		VERTEX_BUFFER_INDEX,
 		BUFFER_COUNT
 	};
+
 	//An instance of the sphere struct which will be used for model collision
 	Sphere _modelCollisionSphere;
 	/*An ID to store the vertex buffer object

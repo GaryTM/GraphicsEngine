@@ -103,17 +103,25 @@ void Shader::unbindShader()
 		glDisableVertexAttribArray(i);
 	}
 }
+
+
 //Gets the location of the uniform with some error checking to avoid invalidity
 GLint Shader::getUniformLocation(const string uniformName)
 {
-	GLint uniformLocation =  glGetUniformLocation(_shaderProgram, uniformName.c_str());
+	GLint uniformLocation = glGetUniformLocation(_shaderProgram, uniformName.c_str());
 
 	if (uniformLocation == GL_INVALID_INDEX)
 	{
-		fatalError("Uniform" + uniformName + "is invalid!");
+		fatalError("Uniform " + uniformName + " is invalid!");
 	}
 	return uniformLocation;
 }
+
+
+void Shader::update(const Transform& transform, const Camera& mainCamera)
+{
+}
+
 
 void Shader::compileShader(const string& shaderFilePath, GLuint id)
 {

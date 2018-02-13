@@ -149,7 +149,7 @@ void Audio::stopAudio(unsigned int id)
 {
 	alSourceStop(id);
 }
-void Audio::setlistener(vec3& position, vec3& cameraLookAt)
+void Audio::setListener(vec3 position, vec3& cameraLookAt)
 {
 	alListener3f(AL_POSITION, position.x, position.y, -position.z);
 	float orinet[6] = { cameraLookAt.x, cameraLookAt.y, cameraLookAt.z,0,1,0 };

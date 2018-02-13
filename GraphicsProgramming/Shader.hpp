@@ -2,6 +2,9 @@
 #include<GL\glew.h>
 #include <string>
 
+#include "Camera.hpp"
+#include "Transform.hpp"
+
 using namespace std;
 class Shader
 {
@@ -14,6 +17,8 @@ public:
 	void shaderLinker();
 	//Used to bind attributes such as vertex positions and colours etc.
 	void createAttribute(const string& attributeName);
+	//Used to update the shader based on the model transform and the main camera in the game
+	void update(const Transform& transform, const Camera& mainCamera);
 	//Allows for a program to be bound
 	void bindShader();
 	//Allows for a program to be unbound... wow!

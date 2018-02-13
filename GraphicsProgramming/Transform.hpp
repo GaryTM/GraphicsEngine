@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "Camera.hpp"
+#include "Camera.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -34,9 +34,9 @@ public:
 	inline vec3* GetRotation() { return &_rotation; }
 	inline vec3* GetScale() { return &_scale; }
 	//Setters for the position, rotation and scale of the matrix
-	inline void SetPosition(vec3& position) { this->_position = position; } // setters
-	inline void SetRotation(vec3& rotation) { this->_rotation = rotation; }
-	inline void SetScale(vec3& scale) { this->_scale = scale; }
+	inline void SetPosition(const vec3& position) { this->_position = position; } // setters
+	inline void SetRotation(const vec3& rotation) { this->_rotation = rotation; }
+	inline void SetScale(const vec3& scale) { this->_scale = scale; }
 
 private:
 	glm::vec3 _position;

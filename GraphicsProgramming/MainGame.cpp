@@ -1,17 +1,19 @@
 #include <iostream>
 #include <string>
 #include "MainGame.hpp"
+#include "Camera.hpp"
 #include "Errors.hpp"
 
 using namespace std;
+using namespace glm;
 
-MainGame::MainGame() : 
-	_gameWindow(nullptr),
+Transform transform;
+
+MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
-	_screenWidth(1280),
-	_screenHeight(720),
 	_time(0.0f)
 {
+	Window* _gameWindow = new Window();
 }
 
 MainGame::~MainGame()
@@ -22,50 +24,22 @@ void MainGame::run()
 {
 	initSystems();
 
-	_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+	//_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
 
 	gameLoop();
 }
 
 void MainGame::initSystems()
 {
-	//Initialises everything SDL has to offer!
-	SDL_Init(SDL_INIT_EVERYTHING); 
+	_gameWindow.initWindow();
 
-	/*Sets up the window giving it a title and ensuring it is centered on the x and y axis,
-	screen width and height are then passed in and the final "flags" parameter grants the
-	ability to specify how the window should initialise (fullscreen, windowed etc.)*/
-	_gameWindow = SDL_CreateWindow
-	("Gary Mulhall | Graphics Programming", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
+	_model.loadModel("Models/Pin.obj");
+	
+	_mainCamera.initCamera(vec3(0, 0, -20), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
-	//Checks if the window failed to load and making it clear
-	if (_gameWindow == nullptr)
-	{
-		fatalError("The window could not be created..");
-	}
+	_counter = 0.5f;
 
-	//Creates OpenGL context which stores all OpenGl related context inluding VBOs, textures etc.
-	SDL_GLContext glContext = SDL_GL_CreateContext(_gameWindow);
-	if (glContext == nullptr)
-	{
-		fatalError("SDL_GLContext failed to create..");
-	}
-
-	//Checks for errors when initialising GLEW
-	GLenum error = glewInit();
-
-	if (error != GLEW_OK)
-	{
-		fatalError("GLEW could not be initialised..");
-	}
-	/*Enables double buffering by creating a virtual window which
-	is drawn to while the other clears and swaps between*/
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	//Sets the background colour
-	glClearColor(0.4f, 1.0f, 1.0f, 1.0f);
-
-	initShaders();
+initShaders();
 }
 
 void MainGame::initShaders()
@@ -90,8 +64,25 @@ void MainGame::gameLoop()
 	}
 }
 
+bool MainGame::collision(vec3 model1Position, float model1Radius, vec3 model2Position, float model2Radius)
+{
+	float distance = sqrt((model2Position.x - model1Position.x)*(model2Position.x - model1Position.x) + (model2Position.y - model1Position.y)*(model2Position.y - model1Position.y) + (model2Position.z - model1Position.z)*(model2Position.z - model1Position.z));
+
+	if (distance < (model1Radius + model2Radius))
+	{
+		_audioDevice.setListener(_mainCamera.getPosition(), model1Position);
+		//playAudio(whistle, m1Pos);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 void MainGame::processInput()
 {
+	vector<SDL_Event> eventList;
+
 	//An instance of an event
 	SDL_Event evnt;
 	/*SDL_PollEvent checks which events need processed with the OS
@@ -99,6 +90,7 @@ void MainGame::processInput()
 	//This loop only runs if there IS an event which needs to be processed
 	while (SDL_PollEvent(&evnt))
 	{
+		eventList.push_back(evnt);
 		//A switch statement used to check all the potential types of events
 		switch (evnt.type)
 		{
@@ -113,28 +105,34 @@ void MainGame::processInput()
 			break;
 		}
 	}
+	_input.EventHandler(eventList);
 }
 
 void MainGame::draw()
 {
-	//Clears the entire depth buffer (I have no idea what difference the 1.0f value makes..
-	glClearDepth(1.0f);
-	//Clears the color buffer and the depth buffer every time the game is drawn
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	_gameWindow.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
 
-	_colourShader.bindShader();
+	float sinCounter = sinf(_counter);
+	float absSinCounter = abs(sinCounter);
 
 	//Setting the uniform before drawing
 	GLuint timeLocation = _colourShader.getUniformLocation("time");
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
-	_sprite.draw();
+	//_sprite.draw();
+
+	transform.SetPosition(vec3(sinf(_counter), -0.1, -5.0));
+	transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_colourShader.bindShader();
+	_colourShader.update(transform, _mainCamera);
+	_model.draw(_mainCamera);
 
 	_colourShader.unbindShader();
 
-	/*Clears everything that has been drawn to the screen and switches
-	to the windows via double buffering*/
-	SDL_GL_SwapWindow(_gameWindow);
+	_counter = _counter + 0.01f;
+
+	_gameWindow.swapBuffer();
 
 	/********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************
 

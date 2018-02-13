@@ -47,7 +47,7 @@ public:
 	void playAudioID(unsigned int id);
 	void playAudio(unsigned int id, vec3& position);
 	void stopAudio(unsigned int id);
-	void setlistener(vec3& position, vec3& cameraLookAt);
+	void setListener(vec3 position, vec3& cameraLookAt);
 
 private:
 };

@@ -77,8 +77,6 @@ public:
 		_forward = vec3(normalize(_rotation * vec4(_forward, 0.0)));
 		_up = vec3(normalize(_rotation * vec4(_up, 0.0)));
 	}
-
-protected:
 private:
 	mat4 _projection;
 	vec3 _position;

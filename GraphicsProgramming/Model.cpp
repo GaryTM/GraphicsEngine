@@ -27,15 +27,21 @@ void Model::init(Vertex3D* vertices, unsigned int verticeCount, unsigned int* in
 	initModel(model);
 }
 
+void Model::loadModel(const string& filename)
+{
+	IndexedModel model = OBJModel(filename).ToIndexedModel();
+	initModel(model);
+	Sphere _modelCollisionSphere();
+}
 void Model::initModel(const IndexedModel& model)
 {
 	_drawCount = model.indices.size();
 
 	//******************** ATTRIBUTE ONE: POSITION ********************
 	//Generate the vertex array based on number and storing it in the VAO
-	glGenVertexArrays(1, &_modelVertexArrayObject); 
+	glGenVertexArrays(1, &_modelVertexArrayObject);
 	//Binding the model VAO
-	glBindVertexArray(_modelVertexArrayObject); 
+	glBindVertexArray(_modelVertexArrayObject);
 	//Generate the buffers using the array of buffer data
 	glGenBuffers(BUFFER_COUNT, _modelVertexArrayBuffers);
 	//Letting OpenGL know what type of data the buffer contains and passing it the data!
@@ -64,14 +70,6 @@ void Model::initModel(const IndexedModel& model)
 	//Unbind the VAO!
 	glBindVertexArray(0);
 }
-
-void Model::loadModel(const string& filename)
-{
-	IndexedModel model = OBJModel(filename).ToIndexedModel();
-	initModel(model);
-	Sphere _modelCollisionSphere();
-}
-
 void Model::updateCollisionSphere(vec3 position, float radius)
 {
 	_modelCollisionSphere.SetSpherePosition(position);
@@ -85,4 +83,10 @@ void Model::draw()
 	glDrawElements(GL_TRIANGLES, _drawCount, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
+}
+
+void Model::draw(const Camera& mainCamera) {
+	//shader->bindShader();
+	//shader->update(transform, mainCamera);
+	draw();
 }
