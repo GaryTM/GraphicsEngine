@@ -33,9 +33,9 @@ void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
 
-	_model.loadModel("Models/Pin.obj");
+	_model.loadModel("Models/box.obj");
 	
-	_mainCamera.initCamera(vec3(0, 0, -20), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
 	_counter = 0.5f;
 
@@ -60,6 +60,14 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.001f;
+		if (_input.isDown(SDLK_RETURN))
+		{
+			_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y + 0.5f, _model.transform.GetPosition()->z - 1.5f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		}
+		if (_input.isDown(SDLK_BACKSPACE))
+		{
+			_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		}
 		draw();
 	}
 }
@@ -100,9 +108,10 @@ void MainGame::processInput()
 			break;
 
 		case SDL_MOUSEMOTION:
-			cout << evnt.motion.x << " " << evnt.motion.y << endl;
+			//cout << evnt.motion.x << " " << evnt.motion.y << endl;
 
 			break;
+
 		}
 	}
 	_input.EventHandler(eventList);
@@ -125,8 +134,8 @@ void MainGame::draw()
 	transform.SetRotation(vec3(0.0, 0.0, 0.0));
 	transform.SetScale(vec3(1.0, 1.0, 1.0));
 	_colourShader.bindShader();
-	_colourShader.update(transform, _mainCamera);
-	_model.draw(_mainCamera);
+
+	_model.draw(_mainCamera, &_colourShader, transform);
 
 	_colourShader.unbindShader();
 

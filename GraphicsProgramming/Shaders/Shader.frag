@@ -3,7 +3,7 @@
 //Inputting the fragment colour from the vertex shader
 in vec4 fragmentColour;
 
-in vec2 fragmentPosition;
+in vec3 fragmentPosition;
 
 //Outputting the RGB colour
 out vec4 colour;

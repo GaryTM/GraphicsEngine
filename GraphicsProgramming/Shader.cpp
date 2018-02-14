@@ -117,12 +117,6 @@ GLint Shader::getUniformLocation(const string uniformName)
 	return uniformLocation;
 }
 
-
-void Shader::update(const Transform& transform, const Camera& mainCamera)
-{
-}
-
-
 void Shader::compileShader(const string& shaderFilePath, GLuint id)
 {
 	//Loading the code from the shader files using an ifstream

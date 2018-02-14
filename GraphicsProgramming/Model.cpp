@@ -1,3 +1,5 @@
+#include <glm\gtc\type_ptr.hpp>
+
 #include "Model.hpp"
 #include "Errors.hpp"
 
@@ -85,8 +87,14 @@ void Model::draw()
 	glBindVertexArray(0);
 }
 
-void Model::draw(const Camera& mainCamera) {
-	//shader->bindShader();
-	//shader->update(transform, mainCamera);
+void Model::draw(const Camera& mainCamera, Shader* shader, const Transform& transform)
+{
+	shader->bindShader();
+
+	GLint transformLocation = shader->getUniformLocation("transform");
+	mat4 mvp = (mainCamera.GetViewProjection() * transform.GetModel());
+
+	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, glm::value_ptr(mvp));
 	draw();
+	shader->unbindShader();
 }

@@ -39,7 +39,7 @@ public:
 	inline void SetScale(const vec3& scale) { this->_scale = scale; }
 
 private:
-	glm::vec3 _position;
-	glm::vec3 _rotation;
-	glm::vec3 _scale;
+	vec3 _position;
+	vec3 _rotation;
+	vec3 _scale;
 };

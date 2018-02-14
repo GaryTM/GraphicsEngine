@@ -69,7 +69,7 @@ public:
 	~Model();
 
 	Transform transform;
-	Shader* shader;
+	Shader* _shader;
 
 	void init(Vertex3D* vertices, unsigned int verticeCount, unsigned int* indices, unsigned int indiceCount);
 	//Used to load a model from file
@@ -83,7 +83,7 @@ public:
 	//Getter for the sphere radius
 	float getSphereRadius() { return _modelCollisionSphere.GetSphereRadius(); }
 	void draw();
-	void draw(const Camera& mainCamera);
+	void draw(const Camera& mainCamera, Shader* shader, const Transform& transform);
 
 private:
 	/*An enum to return values based on position, texture coordinates etc.
