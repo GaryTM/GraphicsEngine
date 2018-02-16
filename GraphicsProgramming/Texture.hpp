@@ -10,8 +10,8 @@ class Texture
 public:
 	Texture();
 	~Texture();
-	void init(string& fileName);
-	void bind(GLuint unit);
+	void init(const string& fileName);
+	void bindTexture(GLuint unit);
 	//A setter to get the texure handler
 	void setTextureHandler(const GLuint& _textureHandler)
 	{

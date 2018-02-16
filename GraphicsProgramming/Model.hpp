@@ -2,6 +2,8 @@
 
 #include "Transform.hpp"
 #include "Shader.hpp"
+#include "Texture.hpp"
+#include "Input.hpp"
 
 #include <glm\glm.hpp>
 #include <GL\glew.h>
@@ -65,7 +67,7 @@ private:
 class Model
 {
 public:
-	Model();
+	Model(Input& input);
 	~Model();
 
 	Transform transform;
@@ -76,6 +78,7 @@ public:
 	void loadModel(const string& filename);
 	//Used for initialising the model by making good use of the obj_loader
 	void initModel(const IndexedModel& model);
+	void update();
 	//Used to update the models collision sphere based on the models position and radius
 	void updateCollisionSphere(vec3 position, float radius);
 	//Getter for the sphere position
@@ -83,7 +86,7 @@ public:
 	//Getter for the sphere radius
 	float getSphereRadius() { return _modelCollisionSphere.GetSphereRadius(); }
 	void draw();
-	void draw(const Camera& mainCamera, Shader* shader, const Transform& transform);
+	void draw(const Camera& mainCamera, Shader* shader, Texture* texture, const Transform& transform);
 
 private:
 	/*An enum to return values based on position, texture coordinates etc.
@@ -104,6 +107,9 @@ private:
 	GLuint _modelVertexArrayObject;
 	//Creating the array of buffers
 	GLuint _modelVertexArrayBuffers[BUFFER_COUNT];
+	Input& _modelControl;
+	vec3 _velocity;
+	int _movement;
 	//Limiter for how much of the VAO should be drawn
 	unsigned int _drawCount;
 };

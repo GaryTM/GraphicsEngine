@@ -3,10 +3,13 @@
 #include "Model.hpp"
 #include "Errors.hpp"
 
-Model::Model() : _drawCount(NULL)
+Model::Model(Input& input) :
+	_drawCount(NULL),
+	_modelControl(input),
+	_velocity(0.1, 0.1, 0.1),
+	_movement(10)
 {
 }
-
 
 Model::~Model()
 {
@@ -72,6 +75,15 @@ void Model::initModel(const IndexedModel& model)
 	//Unbind the VAO!
 	glBindVertexArray(0);
 }
+void Model::update()
+{
+	if (_modelControl.wasDown(SDLK_LEFT))
+	{
+		_velocity.x += _movement;
+	}
+	//transform.SetPosition(transform.GetPosition() + _velocity.x);
+}
+
 void Model::updateCollisionSphere(vec3 position, float radius)
 {
 	_modelCollisionSphere.SetSpherePosition(position);
@@ -87,14 +99,17 @@ void Model::draw()
 	glBindVertexArray(0);
 }
 
-void Model::draw(const Camera& mainCamera, Shader* shader, const Transform& transform)
+void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture, const Transform& transform)
 {
 	shader->bindShader();
 
 	GLint transformLocation = shader->getUniformLocation("transform");
 	mat4 mvp = (mainCamera.GetViewProjection() * transform.GetModel());
-
-	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, glm::value_ptr(mvp));
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, value_ptr(mvp));
+	texture->bindTexture(0);
 	draw();
+
 	shader->unbindShader();
 }

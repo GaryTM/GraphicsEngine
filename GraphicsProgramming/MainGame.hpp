@@ -36,11 +36,14 @@ private:
 	void processInput();
 	//Used to draw everything required for the program
 	void draw();
+	//A separate method to hold the code for camera control (purely for tidiness)
+	void cameraControl();
 	
 	Window _gameWindow;
 	//Used to keep track of which state the program is currently in
 	GameState _currentGameState;
 	Sprite _sprite;
+	Texture _texture;
 	Shader _colourShader;
 	Model _model;
 	Audio _audioDevice;

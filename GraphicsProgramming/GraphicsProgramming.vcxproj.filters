@@ -100,10 +100,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Shader.frag">
+    <None Include="Shaders\ColourShader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\Shader.vert">
+    <None Include="Shaders\ColourShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

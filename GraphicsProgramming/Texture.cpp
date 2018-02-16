@@ -14,7 +14,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &_textureHandler);
 }
 
-void Texture::init(string& fileName)
+void Texture::init(const string& fileName)
 {
 	/*An int which holds the width, height and number of
 	components of the image*/
@@ -42,7 +42,7 @@ void Texture::init(string& fileName)
 	stbi_image_free(imageData);
 }
 
-void Texture::bind(GLuint unit)
+void Texture::bindTexture(GLuint unit)
 {
 	//Just checking that we're using one of 32 textures
 	assert(unit >= 0 && unit <= 31); 

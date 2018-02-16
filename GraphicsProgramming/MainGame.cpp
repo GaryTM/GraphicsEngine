@@ -11,7 +11,8 @@ Transform transform;
 
 MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
-	_time(0.0f)
+	_time(0.0f),
+	_model(_input)
 {
 	Window* _gameWindow = new Window();
 }
@@ -24,7 +25,7 @@ void MainGame::run()
 {
 	initSystems();
 
-	//_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+	_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
 
 	gameLoop();
 }
@@ -35,7 +36,11 @@ void MainGame::initSystems()
 
 	_model.loadModel("Models/box.obj");
 	
-	_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_texture.init("Textures/Texture.jpg");
+
+	//_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+
+	_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
 	_counter = 0.5f;
 
@@ -45,7 +50,7 @@ initShaders();
 void MainGame::initShaders()
 {
 	//Compiling the vertex and fragment shader from file
-	_colourShader.shaderCompiler("Shaders/Shader.vert", "Shaders/Shader.frag");
+	_colourShader.shaderCompiler("Shaders/ColourShader.vert", "Shaders/ColourShader.frag");
 	//Adding the attributes
 	_colourShader.createAttribute("vertexPosition");
 	_colourShader.createAttribute("vertexColour");
@@ -59,15 +64,7 @@ void MainGame::gameLoop()
 	while (_currentGameState != GameState::EXIT)
 	{
 		processInput();
-		_time += 0.001f;
-		if (_input.isDown(SDLK_RETURN))
-		{
-			_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y + 0.5f, _model.transform.GetPosition()->z - 1.5f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		}
-		if (_input.isDown(SDLK_BACKSPACE))
-		{
-			_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		}
+		_time += 0.1f;
 		draw();
 	}
 }
@@ -108,11 +105,11 @@ void MainGame::processInput()
 			break;
 
 		case SDL_MOUSEMOTION:
-			//cout << evnt.motion.x << " " << evnt.motion.y << endl;
+			cout << evnt.motion.x << " " << evnt.motion.y << endl;
 
 			break;
-
 		}
+		cameraControl();
 	}
 	_input.EventHandler(eventList);
 }
@@ -121,23 +118,20 @@ void MainGame::draw()
 {
 	_gameWindow.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
 
-	float sinCounter = sinf(_counter);
-	float absSinCounter = abs(sinCounter);
+	//_sprite.draw();
+
+	float _sinCounter = sinf(_counter);
+	float absSinCounter = abs(_sinCounter);
 
 	//Setting the uniform before drawing
 	GLuint timeLocation = _colourShader.getUniformLocation("time");
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
-	//_sprite.draw();
 
-	transform.SetPosition(vec3(sinf(_counter), -0.1, -5.0));
+	transform.SetPosition(vec3(sinf(_counter), 0.0, 0.0));
 	transform.SetRotation(vec3(0.0, 0.0, 0.0));
 	transform.SetScale(vec3(1.0, 1.0, 1.0));
-	_colourShader.bindShader();
-
-	_model.draw(_mainCamera, &_colourShader, transform);
-
-	_colourShader.unbindShader();
+	_model.draw(_mainCamera, &_colourShader, &_texture, transform);
 
 	_counter = _counter + 0.01f;
 
@@ -155,5 +149,42 @@ void MainGame::draw()
 	glVertex2f(1, 1);
 
 	glEnd();*/
+}
+
+void MainGame::cameraControl()
+{
+	if (_input.wasDown(SDLK_RETURN))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	}
+	if (_input.wasDown(SDLK_BACKSPACE))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 10.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	}
+	if (_input.wasDown(SDLK_KP_8))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y + 2.0f, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.Pitch(0.45f);
+	}
+
+	if (_input.wasDown(SDLK_KP_2))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y - 2.0f, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.Pitch(-0.45f);
+	}
+	if (_input.wasDown(SDLK_KP_4))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x + 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.RotateY(-0.45f);
+	}
+	if (_input.wasDown(SDLK_KP_6))
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x - 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.RotateY(0.45f);
+	}
+	/*if (_input.isButDown(SDL_BUTTON_RIGHT) && SDL_MOUSEMOTION)
+	{
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x - 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	}*/
 }
 
