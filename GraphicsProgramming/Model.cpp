@@ -80,17 +80,19 @@ void Model::initModel(const IndexedModel& model)
 }
 void Model::update()
 {
-	if (_modelControl.wasDown(SDLK_LEFT))
+	if (_modelControl.wasDown(SDLK_a))
 	{
 		_velocity.x += _movement;
 	}
-	//transform.SetPosition(transform.GetPosition() + _velocity.x);
+	transform.SetPosition(transform.GetPosition() + _velocity.x);
+	_modelCollisionSphere.SetPosition(transform.GetPosition());
+	_modelCollisionSphere.SetRadius(0.50f);
 }
 
 void Model::updateCollisionSphere(vec3 position, float radius)
 {
-	_modelCollisionSphere.SetSpherePosition(position);
-	_modelCollisionSphere.SetSphereRadius(radius);
+	_modelCollisionSphere.SetPosition(position);
+	_modelCollisionSphere.SetRadius(radius);
 }
 
 void Model::draw()

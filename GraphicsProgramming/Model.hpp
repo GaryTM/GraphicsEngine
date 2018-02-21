@@ -49,12 +49,12 @@ public:
 	vec3 GetSpherePosition() { return _position; }
 	float GetSphereRadius() { return _radius; }
 	//Setter for the collision sphere position
-	void SetSpherePosition(vec3 position)
+	void SetPosition(vec3 position)
 	{
 		this->_position = position;
 	}
 	//Setter for the collision sphere radius
-	void SetSphereRadius(float radius)
+	void SetRadius(float radius)
 	{
 		this->_radius = radius;
 	}

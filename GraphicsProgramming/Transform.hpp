@@ -30,11 +30,11 @@ public:
 	}
 
 	//Getters for the position, rotation and scale of the matrix
-	inline vec3* GetPosition() { return &_position; } 
+	inline vec3 GetPosition() { return _position; } 
 	inline vec3* GetRotation() { return &_rotation; }
 	inline vec3* GetScale() { return &_scale; }
 	//Setters for the position, rotation and scale of the matrix
-	inline void SetPosition(const vec3& position) { this->_position = position; } // setters
+	inline void SetPosition(const vec3 position) { this->_position = position; }
 	inline void SetRotation(const vec3& rotation) { this->_rotation = rotation; }
 	inline void SetScale(const vec3& scale) { this->_scale = scale; }
 

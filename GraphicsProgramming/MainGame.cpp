@@ -42,7 +42,7 @@ void MainGame::initSystems()
 
 	//_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
-	_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 12.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
 	_ticker = 0.5f;
 
@@ -130,11 +130,12 @@ void MainGame::draw()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	transform.SetPosition(vec3(sinf(_ticker), 0.0, 0.0));
-	transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_model.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	_model.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_model.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_model.update();
+	_model.updateCollisionSphere(_model.transform.GetPosition(), 0.50f);
 	_model.draw(_mainCamera, &_colourShader, &_texture, transform);
-
 	_ticker = _ticker + 0.01f;
 
 	_gameWindow.swapBuffer();
@@ -157,31 +158,31 @@ void MainGame::cameraControl()
 {
 	if (_input.wasDown(SDLK_RETURN))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	}
 	if (_input.wasDown(SDLK_BACKSPACE))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 10.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 10.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	}
 	if (_input.wasDown(SDLK_KP_8))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y + 2.0f, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y + 2.0f, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 		_mainCamera.Pitch(0.45f);
 	}
 
 	if (_input.wasDown(SDLK_KP_2))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y - 2.0f, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y - 2.0f, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 		_mainCamera.Pitch(-0.45f);
 	}
 	if (_input.wasDown(SDLK_KP_4))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x + 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x + 2.0f, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 		_mainCamera.RotateY(-0.45f);
 	}
 	if (_input.wasDown(SDLK_KP_6))
 	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x - 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x - 2.0f, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 		_mainCamera.RotateY(0.45f);
 	}
 	/*if (_input.isButDown(SDL_BUTTON_RIGHT) && SDL_MOUSEMOTION)
