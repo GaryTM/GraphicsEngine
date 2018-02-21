@@ -8,7 +8,9 @@ using namespace std;
 using namespace glm;
 
 Transform transform;
-
+/*These privates variables are being initialised using an inistialisation list
+which only works for constructors, but is faster than adding
+time = 0.0f; etc. to the body of the constructor. REMEMBER THIS!*/
 MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
 	_time(0.0f),
@@ -20,7 +22,7 @@ MainGame::MainGame() :
 MainGame::~MainGame()
 {
 }
-
+//Run the game by initialising all the important stuff required 
 void MainGame::run()
 {
 	initSystems();
@@ -29,7 +31,7 @@ void MainGame::run()
 
 	gameLoop();
 }
-
+//Initialise the required systems. Load the window, models, camera, shaders etc.
 void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
@@ -42,7 +44,7 @@ void MainGame::initSystems()
 
 	_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
-	_counter = 0.5f;
+	_ticker = 0.5f;
 
 initShaders();
 }
@@ -68,7 +70,7 @@ void MainGame::gameLoop()
 		draw();
 	}
 }
-
+//This is how collisions between two models is checked and allows for lots of funk (sounds to play etc.)
 bool MainGame::collision(vec3 model1Position, float model1Radius, vec3 model2Position, float model2Radius)
 {
 	float distance = sqrt((model2Position.x - model1Position.x)*(model2Position.x - model1Position.x) + (model2Position.y - model1Position.y)*(model2Position.y - model1Position.y) + (model2Position.z - model1Position.z)*(model2Position.z - model1Position.z));
@@ -120,7 +122,7 @@ void MainGame::draw()
 
 	//_sprite.draw();
 
-	float _sinCounter = sinf(_counter);
+	float _sinCounter = sinf(_ticker);
 	float absSinCounter = abs(_sinCounter);
 
 	//Setting the uniform before drawing
@@ -128,12 +130,12 @@ void MainGame::draw()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	transform.SetPosition(vec3(sinf(_counter), 0.0, 0.0));
+	transform.SetPosition(vec3(sinf(_ticker), 0.0, 0.0));
 	transform.SetRotation(vec3(0.0, 0.0, 0.0));
 	transform.SetScale(vec3(1.0, 1.0, 1.0));
 	_model.draw(_mainCamera, &_colourShader, &_texture, transform);
 
-	_counter = _counter + 0.01f;
+	_ticker = _ticker + 0.01f;
 
 	_gameWindow.swapBuffer();
 

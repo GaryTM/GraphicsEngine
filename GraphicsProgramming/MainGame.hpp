@@ -38,18 +38,19 @@ private:
 	void draw();
 	//A separate method to hold the code for camera control (purely for tidiness)
 	void cameraControl();
-	
+	//An instance of the window class used for the main game window display
 	Window _gameWindow;
 	//Used to keep track of which state the program is currently in
 	GameState _currentGameState;
 	Sprite _sprite;
 	Texture _texture;
+	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _colourShader;
 	Model _model;
 	Audio _audioDevice;
 	Camera _mainCamera;
 	Input _input;
 	float _time;
-	float _counter;
+	float _ticker;
 };
 

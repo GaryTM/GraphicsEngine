@@ -42,11 +42,16 @@ class Audio
 public:
 	Audio();
 	~Audio();
+	//Used to load an audio file using a fileName parameter
 	unsigned int loadAudioFile(const char* filename);
+	//Removes an audio file based on a created ID
 	void deleteAudio(unsigned int id);
+	//Plays an audio file based on an ID. Imagine that..
 	void playAudioID(unsigned int id);
+	//Plays an audio file using the ID and a play position
 	void playAudio(unsigned int id, vec3& position);
 	void stopAudio(unsigned int id);
+	//The listener is set to the camera as this is where the user should hear the sound from
 	void setListener(vec3 position, vec3& cameraLookAt);
 
 private:

@@ -2,7 +2,7 @@
 //This shader operates on every vertex
 
 //Telling OpenGL we have an input of the Vertex position on a per vertex basis
-//This holds 2 floats for the x and y coordinates
+//This holds 3 floats for the x, y  and z coordinates
 in vec3 vertexPosition;
 //This holds 4 floats for r,g,b,a
 in vec4 vertexColour;

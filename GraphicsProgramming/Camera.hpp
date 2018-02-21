@@ -78,6 +78,8 @@ public:
 		_up = vec3(normalize(_rotation * vec4(_up, 0.0)));
 	}
 private:
+	/*The projection matrix is used to map from the camera to the screen
+	which is integral for the mvp matrix*/
 	mat4 _projection;
 	vec3 _position;
 	vec3 _forward;

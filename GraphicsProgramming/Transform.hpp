@@ -16,7 +16,7 @@ public:
 		this->_rotation = rotation;
 		this->_scale = scale;
 	}
-
+	//A 4x4 matrix full of 4x4 matrices which allows the model to be called
 	inline mat4 GetModel() const
 	{
 		mat4 positionMatrix = translate(_position);

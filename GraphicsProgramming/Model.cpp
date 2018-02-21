@@ -3,6 +3,9 @@
 #include "Model.hpp"
 #include "Errors.hpp"
 
+/*These privates variables are being initialised using an inistialisation list
+which only works for constructors, but is faster than adding
+_drawCount = NULL; etc. to the body of the constructor. REMEMBER THIS!*/
 Model::Model(Input& input) :
 	_drawCount(NULL),
 	_modelControl(input),
