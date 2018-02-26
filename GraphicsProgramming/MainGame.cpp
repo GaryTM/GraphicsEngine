@@ -13,8 +13,8 @@ time = 0.0f; etc. to the body of the constructor. REMEMBER THIS!*/
 MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
 	_time(0.0f),
-	_cube(_input)
-	//_ball(_input)
+	_cube(_input),
+	_ball(_input)
 {
 	Window* _gameWindow = new Window();
 }
@@ -38,7 +38,7 @@ void MainGame::initSystems()
 
 	_cube.loadModel("Models/box.obj");
 	
-	//_ball.loadModel("Models/Ball.obj");
+	_ball.loadModel("Models/ball.obj");
 
 	_texture.init("Textures/Texture.jpg");
 
@@ -54,12 +54,16 @@ initShaders();
 void MainGame::initShaders()
 {
 	//Compiling the vertex and fragment shader from file
-	_colourShader.shaderCompiler("Shaders/ColourShader.vert", "Shaders/ColourShader.frag");
+	_colourShader.compileShaders("Shaders/ColourShader.vert", "Shaders/ColourShader.frag");
+	_colourShader2.compileShaders("Shaders/ColourShader2.vert", "Shaders/ColourShader2.frag");
 	//Adding the attributes
 	_colourShader.createAttribute("vertexPosition");
 	_colourShader.createAttribute("vertexColour");
+	_colourShader2.createAttribute("vertexPosition");
+	_colourShader2.createAttribute("vertexColour");
 	//Linking the shaders
-	_colourShader.shaderLinker();
+	_colourShader.linkShaders();
+	_colourShader2.linkShaders();
 }
 
 void MainGame::gameLoop()
@@ -141,12 +145,12 @@ void MainGame::draw()
 	_cube.draw(_mainCamera, &_colourShader, &_texture);
 
 	//Draw the ball
-	//_ball.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	//_ball.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	//_ball.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	////_ball.update();
-	//_ball.updateCollisionSphere(_ball.transform.GetPosition(), 0.50f);
-	//_ball.draw(_mainCamera, &_colourShader, &_texture, transform);
+	_ball.transform.SetPosition(vec3(2.0, -0.5, 0.0));
+	_ball.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_ball.transform.SetScale(vec3(1.5, 1.5, 1.5));
+	//_ball.update();
+	_ball.updateCollisionSphere(_ball.transform.GetPosition(), 0.50f);
+	_ball.draw(_mainCamera, &_colourShader2, &_texture);
 
 	_ticker = _ticker + 0.01f;
 

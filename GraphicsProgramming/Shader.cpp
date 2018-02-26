@@ -22,7 +22,7 @@ Shader::~Shader()
 {
 }
 
-void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShaderPath)
+void Shader::compileShaders(const string& vertShaderPath, const string& fragShaderPath)
 {
 	//Creating a new program and assigning it to program id
 	_shaderProgram = glCreateProgram();
@@ -43,7 +43,7 @@ void Shader::shaderCompiler(const string& vertShaderPath, const string& fragShad
 	compileShader(vertShaderPath, _vertShader);
 	compileShader(fragShaderPath, _fragShader);
 }
-void Shader::shaderLinker()
+void Shader::linkShaders()
 {
 	//Attaching the shaders to the program just created
 	glAttachShader(_shaderProgram, _vertShader);

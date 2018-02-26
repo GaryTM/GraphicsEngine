@@ -12,9 +12,9 @@ public:
 	Shader();
 	~Shader();
 	//Compiles the shaders from GLSL and makes them usable in OpenGL
-	void shaderCompiler(const string& vertShaderPath, const string& fragShaderPath);
+	void compileShaders(const string& vertShaderPath, const string& fragShaderPath);
 	//Links the shaders together into the program
-	void shaderLinker();
+	void linkShaders();
 	//Used to bind attributes such as vertex positions and colours etc.
 	void createAttribute(const string& attributeName);
 	//Allows for a program to be bound

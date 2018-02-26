@@ -6,6 +6,7 @@
 #include "Shader.hpp"
 #include "Sprite.hpp"
 #include "Model.hpp"
+#include "BallModel.hpp"
 #include "CubeModel.hpp"
 #include "Texture.hpp"
 #include "Transform.hpp"
@@ -46,8 +47,9 @@ private:
 	Texture _texture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _colourShader;
+	Shader _colourShader2;
 	CubeModel _cube;
-	Model _ball;
+	BallModel _ball;
 	Audio _audioDevice;
 	MainCamera _mainCamera;
 	Input _input;
