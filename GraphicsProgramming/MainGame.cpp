@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "MainGame.hpp"
-#include "Camera.hpp"
 #include "Errors.hpp"
 
 using namespace std;
@@ -14,7 +13,8 @@ time = 0.0f; etc. to the body of the constructor. REMEMBER THIS!*/
 MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
 	_time(0.0f),
-	_model(_input)
+	_cube(_input)
+	//_ball(_input)
 {
 	Window* _gameWindow = new Window();
 }
@@ -27,7 +27,7 @@ void MainGame::run()
 {
 	initSystems();
 
-	_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+	//_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
 
 	gameLoop();
 }
@@ -36,13 +36,15 @@ void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
 
-	_model.loadModel("Models/box.obj");
+	_cube.loadModel("Models/box.obj");
 	
+	//_ball.loadModel("Models/Ball.obj");
+
 	_texture.init("Textures/Texture.jpg");
 
 	//_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
-	_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 12.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_mainCamera.initCamera(vec3(_cube.transform.GetPosition().x, _cube.transform.GetPosition().y, _cube.transform.GetPosition().z - 12.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
 	_ticker = 0.5f;
 
@@ -67,6 +69,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
+		_mainCamera.update(_cube, _gameWindow, _input);
 		draw();
 	}
 }
@@ -111,7 +114,6 @@ void MainGame::processInput()
 
 			break;
 		}
-		cameraControl();
 	}
 	_input.EventHandler(eventList);
 }
@@ -130,12 +132,22 @@ void MainGame::draw()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	_model.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	_model.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_model.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	_model.update();
-	_model.updateCollisionSphere(_model.transform.GetPosition(), 0.50f);
-	_model.draw(_mainCamera, &_colourShader, &_texture, transform);
+	//Draw the cube
+	_cube.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	_cube.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_cube.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_cube.update();
+	_cube.updateCollisionSphere(_cube.transform.GetPosition(), 0.50f);
+	_cube.draw(_mainCamera, &_colourShader, &_texture);
+
+	//Draw the ball
+	//_ball.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	//_ball.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	//_ball.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	////_ball.update();
+	//_ball.updateCollisionSphere(_ball.transform.GetPosition(), 0.50f);
+	//_ball.draw(_mainCamera, &_colourShader, &_texture, transform);
+
 	_ticker = _ticker + 0.01f;
 
 	_gameWindow.swapBuffer();
@@ -154,40 +166,4 @@ void MainGame::draw()
 	glEnd();*/
 }
 
-void MainGame::cameraControl()
-{
-	if (_input.wasDown(SDLK_RETURN))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	}
-	if (_input.wasDown(SDLK_BACKSPACE))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 10.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	}
-	if (_input.wasDown(SDLK_KP_8))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y + 2.0f, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		_mainCamera.Pitch(0.45f);
-	}
-
-	if (_input.wasDown(SDLK_KP_2))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x, _model.transform.GetPosition().y - 2.0f, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		_mainCamera.Pitch(-0.45f);
-	}
-	if (_input.wasDown(SDLK_KP_4))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x + 2.0f, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		_mainCamera.RotateY(-0.45f);
-	}
-	if (_input.wasDown(SDLK_KP_6))
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition().x - 2.0f, _model.transform.GetPosition().y, _model.transform.GetPosition().z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-		_mainCamera.RotateY(0.45f);
-	}
-	/*if (_input.isButDown(SDL_BUTTON_RIGHT) && SDL_MOUSEMOTION)
-	{
-		_mainCamera.initCamera(vec3(_model.transform.GetPosition()->x - 2.0f, _model.transform.GetPosition()->y, _model.transform.GetPosition()->z - 5.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	}*/
-}
 

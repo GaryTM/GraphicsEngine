@@ -67,7 +67,7 @@ private:
 class Model
 {
 public:
-	Model(Input& input);
+	Model();
 	~Model();
 
 	Transform transform;
@@ -78,15 +78,14 @@ public:
 	void loadModel(const string& filename);
 	//Used for initialising the model by making good use of the obj_loader
 	void initModel(const IndexedModel& model);
-	void update();
 	//Used to update the models collision sphere based on the models position and radius
 	void updateCollisionSphere(vec3 position, float radius);
 	//Getter for the sphere position
-	vec3 getSpherePosition() { return _modelCollisionSphere.GetSpherePosition(); }
+	vec3 getSpherePosition() { return _collisionSphere.GetSpherePosition(); }
 	//Getter for the sphere radius
-	float getSphereRadius() { return _modelCollisionSphere.GetSphereRadius(); }
+	float getSphereRadius() { return _collisionSphere.GetSphereRadius(); }
 	void draw();
-	void draw(const Camera& mainCamera, Shader* shader, Texture* texture, const Transform& transform);
+	void draw(const Camera& mainCamera, Shader* shader, Texture* texture);
 
 private:
 	/*An enum to return values based on position, texture coordinates etc.
@@ -101,15 +100,12 @@ private:
 	};
 
 	//An instance of the sphere struct which will be used for model collision
-	Sphere _modelCollisionSphere;
+	Sphere _collisionSphere;
 	/*An ID to store the vertex buffer object
 	Using GLuint as opposed to unsigned int guarantees the VBO will be 32 bit*/
-	GLuint _modelVertexArrayObject;
+	GLuint _vertexArrayObject;
 	//Creating the array of buffers
-	GLuint _modelVertexArrayBuffers[BUFFER_COUNT];
-	Input& _modelControl;
-	vec3 _velocity;
-	int _movement;
+	GLuint _vertexArrayBuffers[BUFFER_COUNT];
 	//Limiter for how much of the VAO should be drawn
 	unsigned int _drawCount;
 };

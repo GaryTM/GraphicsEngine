@@ -14,7 +14,7 @@ uniform float time;
 
 void main()
 {
-	colour = vec4 (fragmentColour.r * (cos(fragmentPosition.x * 4.0 + time) + 1.0) * 0.5,
-					fragmentColour.g * (sin(fragmentPosition.y * 1.5 + time) + 1.0) * 0.5,
-					fragmentColour.b * (sin(fragmentPosition.z * 3.0 + time) + 1.0) * 0.5, fragmentColour.a);
+	colour = vec4 (fragmentColour.r * (cos(fragmentPosition.x * 1000.0 + time) + 1.0) * 0.5,
+					fragmentColour.g * (sin(fragmentPosition.y * 1000 + time) + 1.0) * 0.5,
+					fragmentColour.b * (sin(fragmentPosition.z * 1000.0 + time) + 1.0) * 0.5, fragmentColour.a);
 }

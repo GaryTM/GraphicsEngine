@@ -6,8 +6,10 @@
 #include "Shader.hpp"
 #include "Sprite.hpp"
 #include "Model.hpp"
+#include "CubeModel.hpp"
 #include "Texture.hpp"
 #include "Transform.hpp"
+#include "MainCamera.hpp"
 #include "Audio.hpp"
 #include "Input.hpp"
 
@@ -36,8 +38,6 @@ private:
 	void processInput();
 	//Used to draw everything required for the program
 	void draw();
-	//A separate method to hold the code for camera control (purely for tidiness)
-	void cameraControl();
 	//An instance of the window class used for the main game window display
 	Window _gameWindow;
 	//Used to keep track of which state the program is currently in
@@ -46,9 +46,10 @@ private:
 	Texture _texture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _colourShader;
-	Model _model;
+	CubeModel _cube;
+	Model _ball;
 	Audio _audioDevice;
-	Camera _mainCamera;
+	MainCamera _mainCamera;
 	Input _input;
 	float _time;
 	float _ticker;

@@ -84,6 +84,6 @@ private:
 	vec3 _position;
 	vec3 _forward;
 	vec3 _up;
-};
+	};
 
 

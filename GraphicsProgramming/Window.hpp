@@ -24,7 +24,7 @@ public:
 private:
 
 	SDL_GLContext _glContext; //global variable to hold the context
-	SDL_Window* _gameWindow; //holds pointer to out window
+	SDL_Window* _gameWindow;
 	float _screenWidth;
 	float _screenHeight;
 };

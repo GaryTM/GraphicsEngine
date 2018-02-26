@@ -6,11 +6,8 @@
 /*These privates variables are being initialised using an inistialisation list
 which only works for constructors, but is faster than adding
 _drawCount = NULL; etc. to the body of the constructor. REMEMBER THIS!*/
-Model::Model(Input& input) :
-	_drawCount(NULL),
-	_modelControl(input),
-	_velocity(0.1, 0.1, 0.1),
-	_movement(10)
+Model::Model() :
+	_drawCount(NULL)
 {
 }
 
@@ -47,13 +44,13 @@ void Model::initModel(const IndexedModel& model)
 
 	//******************** ATTRIBUTE ONE: POSITION ********************
 	//Generate the vertex array based on number and storing it in the VAO
-	glGenVertexArrays(1, &_modelVertexArrayObject);
+	glGenVertexArrays(1, &_vertexArrayObject);
 	//Binding the model VAO
-	glBindVertexArray(_modelVertexArrayObject);
+	glBindVertexArray(_vertexArrayObject);
 	//Generate the buffers using the array of buffer data
-	glGenBuffers(BUFFER_COUNT, _modelVertexArrayBuffers);
+	glGenBuffers(BUFFER_COUNT, _vertexArrayBuffers);
 	//Letting OpenGL know what type of data the buffer contains and passing it the data!
-	glBindBuffer(GL_ARRAY_BUFFER, _modelVertexArrayBuffers[VERTEX_BUFFER_POSITION]);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[VERTEX_BUFFER_POSITION]);
 	//Chucking the data to the GPU :D
 	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW);
 	//Enable the vertex attribute array
@@ -61,50 +58,40 @@ void Model::initModel(const IndexedModel& model)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	//******************** ATTRIBUTE TWO: TEXTURE COORDINATES **********
-	glBindBuffer(GL_ARRAY_BUFFER, _modelVertexArrayBuffers[VERTEX_BUFFER_TEXTURECOORDINATE]);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[VERTEX_BUFFER_TEXTURECOORDINATE]);
 	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 	//******************** ATTRIBUTE THREE: NORMALS ********************
-	glBindBuffer(GL_ARRAY_BUFFER, _modelVertexArrayBuffers[VERTEX_BUFFER_NORMAL]);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[VERTEX_BUFFER_NORMAL]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	//******************** ATTRIBUTE FOUR: INDICES ********************
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _modelVertexArrayBuffers[VERTEX_BUFFER_INDEX]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _vertexArrayBuffers[VERTEX_BUFFER_INDEX]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
 	//Unbind the VAO!
 	glBindVertexArray(0);
 }
-void Model::update()
-{
-	if (_modelControl.wasDown(SDLK_a))
-	{
-		_velocity.x += _movement;
-	}
-	transform.SetPosition(transform.GetPosition() + _velocity.x);
-	_modelCollisionSphere.SetPosition(transform.GetPosition());
-	_modelCollisionSphere.SetRadius(0.50f);
-}
 
 void Model::updateCollisionSphere(vec3 position, float radius)
 {
-	_modelCollisionSphere.SetPosition(position);
-	_modelCollisionSphere.SetRadius(radius);
+	_collisionSphere.SetPosition(position);
+	_collisionSphere.SetRadius(radius);
 }
 
 void Model::draw()
 {
-	glBindVertexArray(_modelVertexArrayObject);
+	glBindVertexArray(_vertexArrayObject);
 
 	glDrawElements(GL_TRIANGLES, _drawCount, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 }
 
-void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture, const Transform& transform)
+void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture)
 {
 	shader->bindShader();
 
