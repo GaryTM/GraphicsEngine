@@ -1,55 +1,29 @@
-#version 120
+#version 130
+//This shader operates on every vertex
 
-	attribute vec3 tangent;
-	varying vec3 lightVec;
-	varying vec3 halfVec;
-	varying vec3 eyeVec;
-	
+//Telling OpenGL we have an input of the Vertex position on a per vertex basis
+//This holds 3 floats for the x, y  and z coordinates
+in vec3 vertexPosition;
+//This holds 4 floats for r,g,b,a
+in vec4 vertexColour;
 
-  void main()
-  {
+//Transformation matrix received from camera
+uniform mat4 transform;
 
-	gl_TexCoord[0] =  gl_MultiTexCoord0;
-	
-	// Building the matrix Eye Space -> Tangent Space
-	vec3 n = normalize (gl_NormalMatrix * gl_Normal);
-	vec3 t = normalize (gl_NormalMatrix * tangent);
-	vec3 b = cross (n, t);
-	
-	vec3 vertexPosition = vec3(gl_ModelViewMatrix *  gl_Vertex);
-	vec3 lightDir = normalize(gl_LightSource[0].position.xyz - vertexPosition);
-		
-		
-	// transform light and half angle vectors by tangent basis
-	vec3 v;
-	v.x = dot (lightDir, t);
-	v.y = dot (lightDir, b);
-	v.z = dot (lightDir, n);
-	lightVec = normalize (v);
-	
-	  
-	v.x = dot (vertexPosition, t);
-	v.y = dot (vertexPosition, b);
-	v.z = dot (vertexPosition, n);
-	eyeVec = normalize (v);
-	
-	
-	vertexPosition = normalize(vertexPosition);
-	
-	/* Normalize the halfVector to pass it to the fragment shader */
+//This is being output to the fragment shader. It will be interpolated at this
+//stage and then the fragment shader will use the mixed colour
+out vec4 fragmentColour;
 
-	// No need to divide by two, the result is normalized anyway.
-	// vec3 halfVector = normalize((vertexPosition + lightDir) / 2.0); 
-	vec3 halfVector = normalize(vertexPosition + lightDir);
-	v.x = dot (halfVector, t);
-	v.y = dot (halfVector, b);
-	v.z = dot (halfVector, n);
+out vec3 fragmentPosition;
 
-	// No need to normalize, t,b,n and halfVector are normal vectors.
-	//normalize (v);
-	halfVec = v ; 
-	  
-	  
-	gl_Position = ftransform();
+//The main program for the vertex shader
+void main()
+{
+	//This tells the fragment shader the position of the vertex (vertexPosition)
+	gl_Position = transform * vec4(vertexPosition, 1);
 
-  }
+	//This sets the fragment colour to equal the vertex colour
+	fragmentColour = vertexColour;
+
+	fragmentPosition = vertexPosition;
+}

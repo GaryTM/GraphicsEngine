@@ -40,12 +40,13 @@ void MainGame::initSystems()
 	
 	_ball.loadModel("Models/ball.obj");
 
+	_tent.loadModel("Models/Tent.obj");
+
 	_texture.init("Textures/Texture.jpg");
 
 	//_mainCamera.initCamera(vec3(0, 0, -10), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 
-	_mainCamera.initCamera(vec3(_cube.transform.GetPosition().x, _cube.transform.GetPosition().y, _cube.transform.GetPosition().z - 12.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-
+	_cameraOne.initCamera(vec3(_cube.transform.GetPosition().x, _cube.transform.GetPosition().y, _cube.transform.GetPosition().z - 12.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	_ticker = 0.5f;
 
 initShaders();
@@ -55,15 +56,14 @@ void MainGame::initShaders()
 {
 	//Compiling the vertex and fragment shader from file
 	_colourShader.compileShaders("Shaders/ColourShader.vert", "Shaders/ColourShader.frag");
-	_colourShader2.compileShaders("Shaders/ColourShader2.vert", "Shaders/ColourShader2.frag");
+	_normalShader.compileShaders("Shaders/NormalShader.vert", "Shaders/NormalShader.frag");
 	//Adding the attributes
 	_colourShader.createAttribute("vertexPosition");
 	_colourShader.createAttribute("vertexColour");
-	_colourShader2.createAttribute("vertexPosition");
-	_colourShader2.createAttribute("vertexColour");
+
 	//Linking the shaders
 	_colourShader.linkShaders();
-	_colourShader2.linkShaders();
+	_normalShader.linkShaders();
 }
 
 void MainGame::gameLoop()
@@ -73,7 +73,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_mainCamera.update(_cube, _gameWindow, _input);
+		_cameraOne.update(_cube, _gameWindow, _input);
 		draw();
 	}
 }
@@ -84,7 +84,7 @@ bool MainGame::collision(vec3 model1Position, float model1Radius, vec3 model2Pos
 
 	if (distance < (model1Radius + model2Radius))
 	{
-		_audioDevice.setListener(_mainCamera.getPosition(), model1Position);
+		_audioDevice.setListener(_cameraOne.getPosition(), model1Position);
 		//playAudio(whistle, m1Pos);
 		return true;
 	}
@@ -138,19 +138,27 @@ void MainGame::draw()
 
 	//Draw the cube
 	_cube.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	_cube.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_cube.transform.SetRotation(vec3(0.0,0.0,0.0));
 	_cube.transform.SetScale(vec3(1.0, 1.0, 1.0));
 	_cube.update();
 	_cube.updateCollisionSphere(_cube.transform.GetPosition(), 0.50f);
-	_cube.draw(_mainCamera, &_colourShader, &_texture);
+	_cube.draw(_cameraOne, &_colourShader, &_texture);
 
 	//Draw the ball
-	_ball.transform.SetPosition(vec3(2.0, -0.5, 0.0));
+	_ball.transform.SetPosition(vec3(5.0, 0.0, 0.0));
 	_ball.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_ball.transform.SetScale(vec3(1.5, 1.5, 1.5));
+	_ball.transform.SetScale(vec3(0.5, 0.5, 0.5));
 	//_ball.update();
 	_ball.updateCollisionSphere(_ball.transform.GetPosition(), 0.50f);
-	_ball.draw(_mainCamera, &_colourShader2, &_texture);
+	_ball.draw(_cameraOne, &_colourShader, &_texture);
+
+
+	//Draw the tent
+	_tent.transform.SetPosition(vec3(5.0, 0.0, 0.0));
+	_tent.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_tent.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_tent.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
+	_tent.draw(_cameraOne, &_normalShader, &_texture);
 
 	_ticker = _ticker + 0.01f;
 

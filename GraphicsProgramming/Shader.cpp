@@ -156,7 +156,7 @@ void Shader::compileShader(const string& shaderFilePath, GLuint id)
 	{
 		GLint maxLength = 0;
 		/*This will get the length of the log OpenGL creates when compiling
-		which is where we get the maxLength value*/
+		which is where I get the maxLength value*/
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &maxLength);
 		//Essentially a string
 		vector<char> errorLog(maxLength);

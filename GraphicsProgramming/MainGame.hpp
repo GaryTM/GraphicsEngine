@@ -10,7 +10,7 @@
 #include "CubeModel.hpp"
 #include "Texture.hpp"
 #include "Transform.hpp"
-#include "MainCamera.hpp"
+#include "CameraOne.hpp"
 #include "Audio.hpp"
 #include "Input.hpp"
 
@@ -47,11 +47,14 @@ private:
 	Texture _texture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _colourShader;
-	Shader _colourShader2;
+	Shader _normalShader;
+	Model _tree;
+	Model _tent;
+	Model _rock;
 	CubeModel _cube;
 	BallModel _ball;
 	Audio _audioDevice;
-	MainCamera _mainCamera;
+	CameraOne _cameraOne;
 	Input _input;
 	float _time;
 	float _ticker;

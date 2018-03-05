@@ -104,13 +104,13 @@
     <ClInclude Include="Window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainCamera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CubeModel.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BallModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraOne.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,12 +125,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\NormalShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Shaders\ColourShader2.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Shaders\ColourShader2.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

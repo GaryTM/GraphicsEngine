@@ -14,23 +14,23 @@ BallModel::~BallModel()
 //The update method would pretty much be used exclusively to move objects. Not neccessary for Graphics programming handin
 void BallModel::update()
 {
-	//if (_input.wasDown(SDLK_UP))
-	//{
-	//	transform.SetRotation(vec3(-45, 0, 0));
-	//}
-	//if (_input.wasDown(SDLK_DOWN))
-	//{
-	//	transform.SetRotation(vec3(45, 0, 0));
-	//}
-	//if (_input.wasDown(SDLK_LEFT))
-	//{
-	//	transform.SetRotation(vec3(0, 45, 0));
-	//}
-	//if (_input.wasDown(SDLK_RIGHT))
-	//{
-	//	transform.SetRotation(vec3(0, -45, 0));
-	//}
-	////_velocity.x += _movement;
+	if (_input.wasDown(SDLK_w))
+	{
+		transform.SetRotation(vec3(-45, 0, 0));
+	}
+	if (_input.wasDown(SDLK_s))
+	{
+		transform.SetRotation(vec3(45, 0, 0));
+	}
+	if (_input.wasDown(SDLK_a))
+	{
+		transform.SetRotation(vec3(0, 45, 0));
+	}
+	if (_input.wasDown(SDLK_d))
+	{
+		transform.SetRotation(vec3(0, -45, 0));
+	}
+	//_velocity.x += _movement;
 
 	//transform.SetPosition(transform.GetPosition() + _velocity.x);
 	

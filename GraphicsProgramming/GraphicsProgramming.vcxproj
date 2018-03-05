@@ -178,7 +178,7 @@
     <ClInclude Include="Errors.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="IOManager.hpp" />
-    <ClInclude Include="MainCamera.hpp" />
+    <ClInclude Include="CameraOne.hpp" />
     <ClInclude Include="MainGame.hpp" />
     <ClInclude Include="Model.hpp" />
     <ClInclude Include="obj_loader.h" />
@@ -192,8 +192,6 @@
   <ItemGroup>
     <None Include="Shaders\ColourShader.frag" />
     <None Include="Shaders\ColourShader.vert" />
-    <None Include="Shaders\ColourShader2.frag" />
-    <None Include="Shaders\ColourShader2.vert" />
     <None Include="Shaders\NormalShader.frag" />
     <None Include="Shaders\NormalShader.vert" />
   </ItemGroup>

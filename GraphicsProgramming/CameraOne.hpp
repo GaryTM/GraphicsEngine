@@ -4,10 +4,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-struct MainCamera : public Camera
+struct CameraOne : public Camera
 {
 public:
-	MainCamera()
+	CameraOne()
 	{
 	}
 	void update(const Model &_cube, Window &_gameWindow, Input &_input)
