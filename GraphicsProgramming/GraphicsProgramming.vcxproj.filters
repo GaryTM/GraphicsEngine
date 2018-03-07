@@ -115,16 +115,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\ColourShader.frag">
+    <None Include="Shaders\Shader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\ColourShader.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Shaders\NormalShader.frag">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Shaders\NormalShader.vert">
+    <None Include="Shaders\Shader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

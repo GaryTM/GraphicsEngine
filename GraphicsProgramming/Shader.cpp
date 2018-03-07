@@ -9,7 +9,7 @@ using namespace std;
 
 /*These privates variables are being initialised using an inistialisation list
 which only works for constructors, but is faster than adding 
-_numAttributes = 0; etc. to the body of the constructor. REMEMBER THIS!*/
+_numAttributes = 0; etc. to the body of the constructor.*/
 Shader::Shader() :
 	_numAttributes(0),
 	_shaderProgram(0),
@@ -77,12 +77,10 @@ void Shader::linkShaders()
 	glDetachShader(_shaderProgram, _vertShader);
 	glDetachShader(_shaderProgram, _fragShader);
 }
-
 void Shader::createAttribute(const string& attributeName)
 {
 	glBindAttribLocation(_shaderProgram, _numAttributes++, attributeName.c_str());
 }
-
 void Shader::bindShader()
 {
 	glUseProgram(_shaderProgram);
@@ -103,8 +101,6 @@ void Shader::unbindShader()
 		glDisableVertexAttribArray(i);
 	}
 }
-
-
 //Gets the location of the uniform with some error checking to avoid invalidity
 GLint Shader::getUniformLocation(const string uniformName)
 {
