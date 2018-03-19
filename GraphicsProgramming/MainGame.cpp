@@ -44,8 +44,8 @@ void MainGame::initSystems()
 
 	_texture.init("Textures/Texture.jpg");
 
-	_cameraOne.initCamera(vec3(2, 2, -12), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	_ticker = 0.5f;
+	_cameraOne.initCamera(vec3(_cube.transform.GetPosition().x, _cube.transform.GetPosition().y, _cube.transform.GetPosition().z -25.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_ticker = 0.75f;
 
 initShaders();
 }
@@ -53,15 +53,17 @@ initShaders();
 void MainGame::initShaders()
 {
 	//Compiling the vertex and fragment shader from file
-	_shader.compileShaders("Shaders/Shader.vert", "Shaders/Shader.frag");
+	_colourShader.compileShaders("Shaders/ColourShader.vert", "Shaders/ColourShader.frag");
+	_defaultShader.compileShaders("Shaders/DefaultShader.vert", "Shaders/DefaultShader.frag");
 	//Adding the attributes
-	_shader.createAttribute("vertexPosition");
-	_shader.createAttribute("vertexColour");
-
+	_colourShader.createAttribute("vertexPosition");
+	_colourShader.createAttribute("vertexColour");
+	_defaultShader.createAttribute("position");
+	_defaultShader.createAttribute("textureCoordinate");
 	//Linking the shaders
-	_shader.linkShaders();
+	_colourShader.linkShaders();
+	_defaultShader.linkShaders();
 }
-
 void MainGame::gameLoop()
 {
 	//Setting what should happen while the program is running
@@ -125,20 +127,20 @@ void MainGame::draw()
 	//_sprite.draw();
 
 	float _sinCounter = sinf(_ticker);
-	float absSinCounter = abs(_sinCounter);
+	float _absSinCounter = abs(_sinCounter);
 
 	//Setting the uniform before drawing
-	GLuint timeLocation = _shader.getUniformLocation("time");
+	GLuint timeLocation = _colourShader.getUniformLocation("time");
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	////Draw the cube
-	//_cube.transform.SetPosition(vec3(-3.0, 4.0, 0.0));
-	//_cube.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	//_cube.transform.SetScale(vec3(0.5, 0.5, 0.5));
-	//_cube.update();
-	//_cube.updateCollisionSphere(_cube.transform.GetPosition(), 0.50f);
-	//_cube.draw(_cameraOne, &_shader, &_texture);
+	//Draw the cube
+	_cube.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	_cube.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_cube.transform.SetScale(vec3(0.5, 0.5, 0.5));
+	_cube.update();
+	_cube.updateCollisionSphere(_cube.transform.GetPosition(), 0.50f);
+	_cube.draw(_cameraOne, &_defaultShader, &_texture);
 
 	////Draw the ball
 	//_ball.transform.SetPosition(vec3(3.0, 4.0, 0.0));
@@ -149,12 +151,12 @@ void MainGame::draw()
 	//_ball.draw(_cameraOne, &_shader, &_texture);
 
 
-	//Draw the tent
-	_tent.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	_tent.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_tent.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	_tent.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
-	_tent.draw(_cameraOne, &_shader, &_texture);
+	////Draw the tent
+	//_tent.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	//_tent.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	//_tent.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	//_tent.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
+	//_tent.draw(_cameraOne, &_shader, &_texture);
 
 	_ticker = _ticker + 0.01f;
 

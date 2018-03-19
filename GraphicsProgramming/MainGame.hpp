@@ -46,7 +46,8 @@ private:
 	Sprite _sprite;
 	Texture _texture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
-	Shader _shader;
+	Shader _colourShader;
+	Shader _defaultShader;
 	Model _tree;
 	Model _tent;
 	Model _rock;

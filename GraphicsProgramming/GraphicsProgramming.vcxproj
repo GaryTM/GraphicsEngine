@@ -190,8 +190,10 @@
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Shader.frag" />
-    <None Include="Shaders\Shader.vert" />
+    <None Include="Shaders\ColourShader.frag" />
+    <None Include="Shaders\ColourShader.vert" />
+    <None Include="Shaders\DefaultShader.frag" />
+    <None Include="Shaders\DefaultShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

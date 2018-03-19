@@ -5,7 +5,7 @@ in vec4 fragmentColour;
 
 in vec3 fragmentPosition;
 
-//Outputting the RGB colour
+//Outputting the RGBA colour
 out vec4 colour;
 
 //Uniform variables are global across an entire mesh meaning data is not passed per vertex
