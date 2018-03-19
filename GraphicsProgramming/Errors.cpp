@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL\SDL.h>
 #include <cstdlib>
+#include <cassert>;
 
 #include"Errors.hpp"
 
@@ -9,6 +10,7 @@ void fatalError(string errorString)
 {
 	cout << errorString << endl;
 	cout << "Press any key to exit..";
+	assert(false);
 	int tmp;
 	cin >> tmp;
 	SDL_Quit();

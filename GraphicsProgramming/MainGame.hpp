@@ -44,10 +44,12 @@ private:
 	//Used to keep track of which state the program is currently in
 	GameState _currentGameState;
 	Sprite _sprite;
-	Texture _texture;
+	Texture _woodTexture;
+	Texture _greenClothTexture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
-	Shader _colourShader;
-	Shader _defaultShader;
+	Shader _funkyColour;
+	Shader _solidColour;
+	Shader _textured;
 	Model _tree;
 	Model _tent;
 	Model _rock;

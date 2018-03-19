@@ -24,7 +24,7 @@ void Texture::init(const string& fileName)
 	//A little bit of error checking
 	if (imageData == NULL)
 	{
-		fatalError("Texture " + fileName + "could not be loaded!");
+		fatalError("Texture " + fileName + "could not be loaded! ");
 	}
 	//Generating the texture by number and the address of the texture in memory
 	glGenTextures(1, &_textureHandler);

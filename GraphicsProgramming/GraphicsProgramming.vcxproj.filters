@@ -115,16 +115,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\ColourShader.frag">
+    <None Include="Shaders\SolidColour.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\ColourShader.vert">
+    <None Include="Shaders\SolidColour.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\DefaultShader.frag">
+    <None Include="Shaders\FunkyColour.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Shaders\DefaultShader.vert">
+    <None Include="Shaders\FunkyColour.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Textured.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Textured.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
