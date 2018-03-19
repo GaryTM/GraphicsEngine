@@ -155,8 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="BallModel.cpp" />
-    <ClCompile Include="CubeModel.cpp" />
+    <ClCompile Include="MoveableModel.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IOManager.cpp" />
@@ -172,9 +171,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.hpp" />
-    <ClInclude Include="BallModel.hpp" />
     <ClInclude Include="Camera.hpp" />
-    <ClInclude Include="CubeModel.hpp" />
+    <ClInclude Include="MoveableModel.hpp" />
     <ClInclude Include="Errors.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="IOManager.hpp" />

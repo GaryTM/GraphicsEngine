@@ -12,9 +12,7 @@ which only works for constructors, but is faster than adding
 time = 0.0f; etc. to the body of the constructor. REMEMBER THIS!*/
 MainGame::MainGame() :
 	_currentGameState(GameState::PLAY),
-	_time(0.0f),
-	_cube(_input),
-	_ball(_input)
+	_time(0.0f)
 {
 	Window* _gameWindow = new Window();
 }
@@ -36,14 +34,21 @@ void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
 
-	_cube.loadModel("Models/box.obj");
-	_ball.loadModel("Models/ball.obj");
-	_tent.loadModel("Models/Tent.obj");
+	//_tent.loadModel("Models/Tent_01.obj");
+	//_tree.loadModel("Models/Tree_01.obj");
+	//_fire.loadModel("Models/Campfire_01.obj");
+	_grass.loadModel("Models/Plate_Grass_Dirt_01.obj");
+	_cliff.loadModel("Models/Grey_Cliff_End_01.obj");
+	//_trunk.loadModel("Models/Trunk_01.obj");
 
-	_woodTexture.init("Textures/WoodTexture.jpg");
-	_greenClothTexture.init("Textures/GreenClothTexture.jpg");
+	//_tentTexture.init("Textures/TentTexture.jpg");
+	//_treeTexture.init("Textures/TreeTexture.jpg");
+	//_fireTexture.init("Textures/FireTexture.jpg");
+	_grassTexture.init("Textures/GrassTexture.jpg");
+	_cliffTexture.init("Textures/CliffTexture.jpg");
+	//_trunkTexture.init("Textures/TrunkTexture.jpg");
 
-	_cameraOne.initCamera(vec3(0.0,0.0, -25.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_cameraOne.initCamera(vec3(0.0,0.0, -7.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
@@ -54,7 +59,7 @@ void MainGame::initShaders()
 	//Compiling the vertex and fragment shader from file
 	_funkyColour.compileShaders("Shaders/FunkyColour.vert", "Shaders/FunkyColour.frag");
 	_solidColour.compileShaders("Shaders/SolidColour.vert", "Shaders/SolidColour.frag");
-	//_textured.compileShaders("Shaders/Textured.vert", "Shaders/Textured.frag");
+	_textured.compileShaders("Shaders/Textured.vert", "Shaders/Textured.frag");
 	//Adding the attributes
 	_funkyColour.createAttribute("vertexPosition");
 	_funkyColour.createAttribute("vertexColour");
@@ -62,6 +67,7 @@ void MainGame::initShaders()
 	//Linking the shaders
 	_funkyColour.linkShaders();
 	_solidColour.linkShaders();
+	_textured.linkShaders();
 }
 void MainGame::gameLoop()
 {
@@ -70,7 +76,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_cameraOne.update(_cube, _gameWindow, _input);
+		//_cameraOne.update(_cube, _gameWindow, _input);
 		draw();
 	}
 }
@@ -134,27 +140,27 @@ void MainGame::draw()
 	glUniform1f(timeLocation, _time);
 
 	//Draw the cube
-	_cube.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	_cube.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_cube.transform.SetScale(vec3(0.5, 0.5, 0.5));
+	_grass.transform.SetPosition(vec3(-1.5, -3.0, 1.0));
+	_grass.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_grass.transform.SetScale(vec3(3.5, 1.0, 1.0));
 	//_cube.update();
-	_cube.updateCollisionSphere(_cube.transform.GetPosition(), 0.50f);
-	_cube.draw(_cameraOne, &_solidColour, &_woodTexture);
+	_grass.updateCollisionSphere(_grass.transform.GetPosition(), 0.50f);
+	_grass.draw(_cameraOne, &_textured, &_grassTexture);
 
 	////Draw the ball
-	//_ball.transform.SetPosition(vec3(3.0, 4.0, 0.0));
-	//_ball.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	//_ball.transform.SetScale(vec3(0.5, 0.5, 0.5));
+	//_trunk.transform.SetPosition(vec3(3.0, 4.0, 0.0));
+	//_trunk.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	//_trunk.transform.SetScale(vec3(0.5, 0.5, 0.5));
 	////_ball.update();
-	//_ball.updateCollisionSphere(_ball.transform.GetPosition(), 0.50f);
-	//_ball.draw(_cameraOne, &_shader, &_texture);
+	//_trunk.updateCollisionSphere(_trunk.transform.GetPosition(), 0.50f);
+	//_trunk.draw(_cameraOne, &_textured, &_trunkTexture);
 
-	////Draw the tent
-	//_tent.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	//_tent.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	//_tent.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	//_tent.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
-	//_tent.draw(_cameraOne, &_defaultShader, &_greenClothTexture);
+	//Draw the tent
+	_cliff.transform.SetPosition(vec3(0.0, 0.0, 0.0));
+	_cliff.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_cliff.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	_cliff.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
+	_cliff.draw(_cameraOne, &_textured, &_cliffTexture);
 
 	_ticker = _ticker + 0.01f;
 

@@ -54,10 +54,7 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CubeModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallModel.cpp">
+    <ClCompile Include="MoveableModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,13 +101,10 @@
     <ClInclude Include="Window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CubeModel.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BallModel.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CameraOne.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveableModel.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

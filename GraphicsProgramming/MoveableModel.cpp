@@ -1,18 +1,18 @@
-#include "CubeModel.hpp"
+#include "MoveableModel.hpp"
 
-CubeModel::CubeModel(Input& input) :
+MoveableModel::MoveableModel(Input& input) :
 	_input(input),
 	_velocity(0.1, 0.1, 0.1),
 	_movement(1)
 {
 }
 
-CubeModel::~CubeModel()
+MoveableModel::~MoveableModel()
 {
 }
 
 //The update method would pretty much be used exclusively to move objects. Not neccessary for Graphics programming handin
-void CubeModel::update()
+void MoveableModel::update()
 {
 	if (_input.wasDown(SDLK_UP))
 	{

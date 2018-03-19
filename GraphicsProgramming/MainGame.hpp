@@ -6,8 +6,6 @@
 #include "Shader.hpp"
 #include "Sprite.hpp"
 #include "Model.hpp"
-#include "BallModel.hpp"
-#include "CubeModel.hpp"
 #include "Texture.hpp"
 #include "Transform.hpp"
 #include "CameraOne.hpp"
@@ -44,17 +42,22 @@ private:
 	//Used to keep track of which state the program is currently in
 	GameState _currentGameState;
 	Sprite _sprite;
-	Texture _woodTexture;
-	Texture _greenClothTexture;
+	Texture _treeTexture;
+	Texture _tentTexture;
+	Texture _fireTexture;
+	Texture _grassTexture;
+	Texture _trunkTexture;
+	Texture _cliffTexture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _funkyColour;
 	Shader _solidColour;
 	Shader _textured;
 	Model _tree;
 	Model _tent;
-	Model _rock;
-	CubeModel _cube;
-	BallModel _ball;
+	Model _fire;
+	Model _grass;
+	Model _trunk;
+	Model _cliff;
 	Audio _audioDevice;
 	CameraOne _cameraOne;
 	Input _input;

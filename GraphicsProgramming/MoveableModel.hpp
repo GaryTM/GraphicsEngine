@@ -2,11 +2,11 @@
 
 #include "Model.hpp"
 
-class CubeModel : public Model
+class MoveableModel : public Model
 {
 public:
-	CubeModel(Input& input);
-	~CubeModel();
+	MoveableModel(Input& input);
+	~MoveableModel();
 
 	void update();
 

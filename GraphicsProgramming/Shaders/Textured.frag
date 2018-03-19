@@ -1,12 +1,10 @@
-    #version 150 core
+#version 130
 
-    in vec3 Colour;
-    in vec2 Texture;
-    out vec4 outColour;
+in vec2 texCoord0;
 
-    uniform sampler3D textures;
+uniform sampler2D diffuse;
 
-    void main()
-    {
-        outColour = texture(textures, Texture) * vec4(Colour, 1.0);
-    }
+void main()
+{
+	gl_FragColor = texture2D(diffuse, texCoord0);
+}

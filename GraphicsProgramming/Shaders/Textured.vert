@@ -1,18 +1,14 @@
-    #version 150 core
+#version 130
 
-    in vec3 vertexPosition;
-    in vec3 colour;
-    in vec2 texture;
+in vec3 position;
+in vec2 texCoord;
 
-    out vec3 Colour;
-    out vec2 Texture;
+out vec2 texCoord0;
 
-	//Transformation matrix received from camera
 uniform mat4 transform;
 
-    void main()
-    {
-        Colour = colour;
-        Texture = texture;
-		gl_Position = transform * vec4(vertexPosition, 1);
+void main()
+{
+	gl_Position = transform * vec4(position, 1.0);
+	texCoord0 = texCoord;
 }
