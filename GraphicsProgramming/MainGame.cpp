@@ -38,7 +38,7 @@ void MainGame::initSystems()
 	//_tree.loadModel("Models/Tree_01.obj");
 	//_fire.loadModel("Models/Campfire_01.obj");
 	_grass.loadModel("Models/Plate_Grass_Dirt_01.obj");
-	_cliff.loadModel("Models/Grey_Cliff_End_01.obj");
+	_cliff.loadModel("Models/Grey_Cliff_01.obj");
 	//_trunk.loadModel("Models/Trunk_01.obj");
 
 	//_tentTexture.init("Textures/TentTexture.jpg");
@@ -46,9 +46,9 @@ void MainGame::initSystems()
 	//_fireTexture.init("Textures/FireTexture.jpg");
 	_grassTexture.init("Textures/GrassTexture.jpg");
 	_cliffTexture.init("Textures/CliffTexture.jpg");
-	//_trunkTexture.init("Textures/TrunkTexture.jpg");
+	_trunkTexture.init("Textures/TrunkTexture.jpg");
 
-	_cameraOne.initCamera(vec3(0.0,0.0, -7.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_cameraOne.initCamera(vec3(0.0, 0.0, -7.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
@@ -76,7 +76,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		//_cameraOne.update(_cube, _gameWindow, _input);
+		_cameraOne.update(_fire, _gameWindow, _input);
 		draw();
 	}
 }
@@ -139,27 +139,26 @@ void MainGame::draw()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	//Draw the cube
-	_grass.transform.SetPosition(vec3(-1.5, -3.0, 1.0));
+	//Draw the grass
+	_grass.transform.SetPosition(vec3(-1.5, -3.0, 2.0));
 	_grass.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_grass.transform.SetScale(vec3(3.5, 1.0, 1.0));
-	//_cube.update();
+	_grass.transform.SetScale(vec3(6.0, 1.0, 2.0));
 	_grass.updateCollisionSphere(_grass.transform.GetPosition(), 0.50f);
 	_grass.draw(_cameraOne, &_textured, &_grassTexture);
 
-	////Draw the ball
-	//_trunk.transform.SetPosition(vec3(3.0, 4.0, 0.0));
-	//_trunk.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	//_trunk.transform.SetScale(vec3(0.5, 0.5, 0.5));
-	////_ball.update();
-	//_trunk.updateCollisionSphere(_trunk.transform.GetPosition(), 0.50f);
-	//_trunk.draw(_cameraOne, &_textured, &_trunkTexture);
+	//Draw the trunk
+	_trunk.transform.SetPosition(vec3(3.0, 4.0, 0.0));
+	_trunk.transform.SetRotation(vec3(0.0, 0.0, 0.0));
+	_trunk.transform.SetScale(vec3(1.0, 1.0, 1.0));
+	//_ball.update();
+	_trunk.updateCollisionSphere(_trunk.transform.GetPosition(), 0.50f);
+	_trunk.draw(_cameraOne, &_textured, &_trunkTexture);
 
-	//Draw the tent
-	_cliff.transform.SetPosition(vec3(0.0, 0.0, 0.0));
-	_cliff.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_cliff.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	_cliff.updateCollisionSphere(_tent.transform.GetPosition(), 0.50f);
+	//Draw the cliff
+	_cliff.transform.SetPosition(vec3(2.5, -1.0, 1.5));
+	_cliff.transform.SetRotation(vec3(0.0, -45.0, 0.0));
+	_cliff.transform.SetScale(vec3(2.0, 2.0, 1.0));
+	_cliff.updateCollisionSphere(_cliff.transform.GetPosition(), 0.50f);
 	_cliff.draw(_cameraOne, &_textured, &_cliffTexture);
 
 	_ticker = _ticker + 0.01f;
