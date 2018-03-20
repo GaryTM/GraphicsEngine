@@ -34,21 +34,17 @@ void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
 
-	//_tent.loadModel("Models/Tent_01.obj");
-	//_tree.loadModel("Models/Tree_01.obj");
-	//_fire.loadModel("Models/Campfire_01.obj");
-	_grass.loadModel("Models/Plate_Grass_Dirt_01.obj");
-	_cliff.loadModel("Models/Grey_Cliff_01.obj");
-	//_trunk.loadModel("Models/Trunk_01.obj");
+	_woodDoor.loadModel("Models/WoodDoor.obj");
+	_barrel.loadModel("Models/Barrel.obj");
+	_wallTop.loadModel("Models/WallTop.obj");
+	_wallBottom.loadModel("Models/WallBottom.obj");
 
-	//_tentTexture.init("Textures/TentTexture.jpg");
-	//_treeTexture.init("Textures/TreeTexture.jpg");
-	//_fireTexture.init("Textures/FireTexture.jpg");
-	_grassTexture.init("Textures/GrassTexture.jpg");
-	_cliffTexture.init("Textures/CliffTexture.jpg");
-	_trunkTexture.init("Textures/TrunkTexture.jpg");
+	_woodDoorTexture.init("Textures/WoodDoorTexture.jpg");
+	_barrelTexture.init("Textures/BarrelTexture.jpg");
+	_wallTexture.init("Textures/WallTexture.jpg");
 
-	_cameraOne.initCamera(vec3(0.0, 0.0, -7.0f), 70.0f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_cameraOne.initCamera(vec3(0.0f, 1.0f, -3.5f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_cameraOne.Pitch(0.35f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
@@ -76,7 +72,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_cameraOne.update(_fire, _gameWindow, _input);
+		_cameraOne.update(_wallBottom, _gameWindow, _input);
 		draw();
 	}
 }
@@ -127,7 +123,7 @@ void MainGame::processInput()
 
 void MainGame::draw()
 {
-	_gameWindow.clearWindow(0.0f, 0.0f, 0.0f, 1.0f);
+	_gameWindow.clearWindow(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//_sprite.draw();
 
@@ -139,27 +135,7 @@ void MainGame::draw()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 
-	//Draw the grass
-	_grass.transform.SetPosition(vec3(-1.5, -3.0, 2.0));
-	_grass.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_grass.transform.SetScale(vec3(6.0, 1.0, 2.0));
-	_grass.updateCollisionSphere(_grass.transform.GetPosition(), 0.50f);
-	_grass.draw(_cameraOne, &_textured, &_grassTexture);
-
-	//Draw the trunk
-	_trunk.transform.SetPosition(vec3(3.0, 4.0, 0.0));
-	_trunk.transform.SetRotation(vec3(0.0, 0.0, 0.0));
-	_trunk.transform.SetScale(vec3(1.0, 1.0, 1.0));
-	//_ball.update();
-	_trunk.updateCollisionSphere(_trunk.transform.GetPosition(), 0.50f);
-	_trunk.draw(_cameraOne, &_textured, &_trunkTexture);
-
-	//Draw the cliff
-	_cliff.transform.SetPosition(vec3(2.5, -1.0, 1.5));
-	_cliff.transform.SetRotation(vec3(0.0, -45.0, 0.0));
-	_cliff.transform.SetScale(vec3(2.0, 2.0, 1.0));
-	_cliff.updateCollisionSphere(_cliff.transform.GetPosition(), 0.50f);
-	_cliff.draw(_cameraOne, &_textured, &_cliffTexture);
+	CreateTheModels();
 
 	_ticker = _ticker + 0.01f;
 
@@ -177,6 +153,42 @@ void MainGame::draw()
 	glVertex2f(1, 1);
 
 	glEnd();*/
+}
+
+void MainGame::CreateTheModels()
+{
+	//Draw the wooden door
+	_woodDoor.transform.SetPosition(vec3(-0.5f, -1.0f, 0.0f));
+	_woodDoor.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_woodDoor.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_woodDoor.updateCollisionSphere(_woodDoor.transform.GetPosition(), 0.50f);
+	_woodDoor.draw(_cameraOne, &_textured, &_woodDoorTexture);
+
+	//Draw the barrel
+	_barrel.transform.SetPosition(vec3(-1.2f, -1.0f, 0.0f));
+	_barrel.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_barrel.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_barrel.updateCollisionSphere(_barrel.transform.GetPosition(), 0.50f);
+	_barrel.draw(_cameraOne, &_textured, &_barrelTexture);
+
+	//Draw the top of the wall
+	_wallTop.transform.SetPosition(vec3(-0.5f, 0.0f, 0.0f));
+	_wallTop.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_wallTop.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_wallTop.updateCollisionSphere(_wallTop.transform.GetPosition(), 0.50f);
+	_wallTop.draw(_cameraOne, &_solidColour, &_wallTexture);
+	//... and the bottom
+	_wallBottom.transform.SetPosition(vec3(-0.5f, -1.0f, 0.0f));
+	_wallBottom.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_wallBottom.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_wallBottom.updateCollisionSphere(_wallBottom.transform.GetPosition(), 0.50f);
+	_wallBottom.draw(_cameraOne, &_solidColour, &_wallTexture);
+	//and again
+	_wallBottom.transform.SetPosition(vec3(-0.5f, 0.15f, 0.0f));
+	_wallBottom.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_wallBottom.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_wallBottom.updateCollisionSphere(_wallBottom.transform.GetPosition(), 0.50f);
+	_wallBottom.draw(_cameraOne, &_solidColour, &_wallTexture);
 }
 
 

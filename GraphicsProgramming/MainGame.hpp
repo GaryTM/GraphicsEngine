@@ -37,27 +37,23 @@ private:
 	void processInput();
 	//Used to draw everything required for the program
 	void draw();
+	void CreateTheModels();
 	//An instance of the window class used for the main game window display
 	Window _gameWindow;
 	//Used to keep track of which state the program is currently in
 	GameState _currentGameState;
 	Sprite _sprite;
-	Texture _treeTexture;
-	Texture _tentTexture;
-	Texture _fireTexture;
-	Texture _grassTexture;
-	Texture _trunkTexture;
-	Texture _cliffTexture;
+	Texture _barrelTexture;
+	Texture _wallTexture;
+	Texture _woodDoorTexture;
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _funkyColour;
 	Shader _solidColour;
 	Shader _textured;
-	Model _tree;
-	Model _tent;
-	Model _fire;
-	Model _grass;
-	Model _trunk;
-	Model _cliff;
+	Model _barrel;
+	Model _wallTop;
+	Model _wallBottom;
+	Model _woodDoor;
 	Audio _audioDevice;
 	CameraOne _cameraOne;
 	Input _input;
