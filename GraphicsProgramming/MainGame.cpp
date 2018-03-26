@@ -34,7 +34,9 @@ void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
 	//Models
-	_door.loadModel("Models/Door.obj");
+	_sofa.loadModel("Models/sofa.obj");
+	_singleSofa.loadModel("Models/sofa_single.obj");
+	_foldTable.loadModel("Models/table_fold.obj");
 
 	//Textures
 	_woodDoorTexture.init("Textures/WoodDoorTexture.jpg");
@@ -42,7 +44,7 @@ void MainGame::initSystems()
 	_wallTexture.init("Textures/WallTexture.jpg");
 
 	_cameraOne.initCamera(vec3(0.0f, 1.25f, -3.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	_cameraOne.Pitch(0.25f);
+	_cameraOne.Pitch(0.35f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
@@ -72,7 +74,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_cameraOne.update(_door, _gameWindow, _input);
+		_cameraOne.update(_sofa, _gameWindow, _input);
 		draw();
 	}
 }
@@ -143,17 +145,32 @@ void MainGame::draw()
 
 void MainGame::CreateTheModels()
 {
-	//Draw the first chest
-	_door.transform.SetPosition(vec3(-0.5f, 0.0f, 0.0f));
-	_door.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_door.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	//Draw the sofa
+	_sofa.transform.SetPosition(vec3(0.0f, 0.0f, 0.0f));
+	_sofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_sofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
 	setToonLighting();
-	_door.updateCollisionSphere(_door.transform.GetPosition(), 0.50f);
-	_door.draw(_cameraOne, &_toon, &_barrelTexture);
+	_sofa.updateCollisionSphere(_sofa.transform.GetPosition(), 0.50f);
+	_sofa.draw(_cameraOne, &_toon, &_barrelTexture);
+
+	//Draw the foldable table
+	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
+	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
+	_foldTable.draw(_cameraOne, &_toon, &_barrelTexture);
+
+	//Draw the single sofa
+	_singleSofa.transform.SetPosition(vec3(-1.5f, 0.0f, 0.0f));
+	_singleSofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_singleSofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	setToonLighting();
+	_singleSofa.updateCollisionSphere(_singleSofa.transform.GetPosition(), 0.50f);
+	_singleSofa.draw(_cameraOne, &_toon, &_barrelTexture);
 }
 void MainGame::setToonLighting()
 {
-	_toon.setVec3("lightDir", vec3(0.5f, 0.5f, 0.5f));
+	_toon.setVec3("lightDir", vec3(1.0f, 1.0f, 1.0f));
 }
 
 void MainGame::setADSLighting()

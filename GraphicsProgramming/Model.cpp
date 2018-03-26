@@ -97,8 +97,8 @@ void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture)
 
 	GLint transformLocation = shader->getUniformLocation("transform");
 	mat4 mvp = (mainCamera.GetViewProjection() * transform.GetModel());
-	/*glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);*/
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, value_ptr(mvp));
 	texture->bindTexture(0);
 	draw();

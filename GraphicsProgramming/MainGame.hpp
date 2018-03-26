@@ -53,7 +53,9 @@ private:
 	Shader _solidColour;
 	Shader _toon;
 	Shader _textured;
-	Model _door;
+	Model _sofa;
+	Model _singleSofa;
+	Model _foldTable;
 	Audio _audioDevice;
 	CameraOne _cameraOne;
 	Input _input;
