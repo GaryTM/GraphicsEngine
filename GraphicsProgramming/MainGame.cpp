@@ -33,18 +33,16 @@ void MainGame::run()
 void MainGame::initSystems()
 {
 	_gameWindow.initWindow();
+	//Models
+	_door.loadModel("Models/Door.obj");
 
-	_woodDoor.loadModel("Models/WoodDoor.obj");
-	_barrel.loadModel("Models/Barrel.obj");
-	_wallTop.loadModel("Models/WallTop.obj");
-	_wallBottom.loadModel("Models/WallBottom.obj");
-
+	//Textures
 	_woodDoorTexture.init("Textures/WoodDoorTexture.jpg");
 	_barrelTexture.init("Textures/BarrelTexture.jpg");
 	_wallTexture.init("Textures/WallTexture.jpg");
 
-	_cameraOne.initCamera(vec3(0.0f, 1.0f, -3.5f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
-	_cameraOne.Pitch(0.35f);
+	_cameraOne.initCamera(vec3(0.0f, 1.25f, -3.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
+	_cameraOne.Pitch(0.25f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
@@ -56,6 +54,7 @@ void MainGame::initShaders()
 	_funkyColour.compileShaders("Shaders/FunkyColour.vert", "Shaders/FunkyColour.frag");
 	_solidColour.compileShaders("Shaders/SolidColour.vert", "Shaders/SolidColour.frag");
 	_textured.compileShaders("Shaders/Textured.vert", "Shaders/Textured.frag");
+	_toon.compileShaders("Shaders/Toon.vert", "Shaders/Toon.frag");
 	//Adding the attributes
 	_funkyColour.createAttribute("vertexPosition");
 	_funkyColour.createAttribute("vertexColour");
@@ -64,6 +63,7 @@ void MainGame::initShaders()
 	_funkyColour.linkShaders();
 	_solidColour.linkShaders();
 	_textured.linkShaders();
+	_toon.linkShaders();
 }
 void MainGame::gameLoop()
 {
@@ -72,7 +72,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_cameraOne.update(_wallBottom, _gameWindow, _input);
+		_cameraOne.update(_door, _gameWindow, _input);
 		draw();
 	}
 }
@@ -83,8 +83,7 @@ bool MainGame::collision(vec3 model1Position, float model1Radius, vec3 model2Pos
 
 	if (distance < (model1Radius + model2Radius))
 	{
-		_audioDevice.setListener(_cameraOne.getPosition(), model1Position);
-		//playAudio(whistle, m1Pos);
+		_audioDevice.setListener(_cameraOne.GetPosition(), model1Position);
 		return true;
 	}
 	else
@@ -140,55 +139,54 @@ void MainGame::draw()
 	_ticker = _ticker + 0.01f;
 
 	_gameWindow.swapBuffer();
-
-	/********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************
-
-	glEnableClientState(GL_COLOR_ARRAY);
-	//Tells OpenGL which type of polygon should be drawn (triangles, points etc.)
-	glBegin(GL_TRIANGLES);
-
-	glColor3f(1.0f, 0.5f, 0.5f);
-	glVertex2f(0, 0);
-	glVertex2f(0, 1);
-	glVertex2f(1, 1);
-
-	glEnd();*/
 }
 
 void MainGame::CreateTheModels()
 {
-	//Draw the wooden door
-	_woodDoor.transform.SetPosition(vec3(-0.5f, -1.0f, 0.0f));
-	_woodDoor.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_woodDoor.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	_woodDoor.updateCollisionSphere(_woodDoor.transform.GetPosition(), 0.50f);
-	_woodDoor.draw(_cameraOne, &_textured, &_woodDoorTexture);
-
-	//Draw the barrel
-	_barrel.transform.SetPosition(vec3(-1.2f, -1.0f, 0.0f));
-	_barrel.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_barrel.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	_barrel.updateCollisionSphere(_barrel.transform.GetPosition(), 0.50f);
-	_barrel.draw(_cameraOne, &_textured, &_barrelTexture);
-
-	//Draw the top of the wall
-	_wallTop.transform.SetPosition(vec3(-0.5f, 0.0f, 0.0f));
-	_wallTop.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_wallTop.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	_wallTop.updateCollisionSphere(_wallTop.transform.GetPosition(), 0.50f);
-	_wallTop.draw(_cameraOne, &_solidColour, &_wallTexture);
-	//... and the bottom
-	_wallBottom.transform.SetPosition(vec3(-0.5f, -1.0f, 0.0f));
-	_wallBottom.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_wallBottom.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	_wallBottom.updateCollisionSphere(_wallBottom.transform.GetPosition(), 0.50f);
-	_wallBottom.draw(_cameraOne, &_solidColour, &_wallTexture);
-	//and again
-	_wallBottom.transform.SetPosition(vec3(-0.5f, 0.15f, 0.0f));
-	_wallBottom.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_wallBottom.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	_wallBottom.updateCollisionSphere(_wallBottom.transform.GetPosition(), 0.50f);
-	_wallBottom.draw(_cameraOne, &_solidColour, &_wallTexture);
+	//Draw the first chest
+	_door.transform.SetPosition(vec3(-0.5f, 0.0f, 0.0f));
+	_door.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_door.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	setToonLighting();
+	_door.updateCollisionSphere(_door.transform.GetPosition(), 0.50f);
+	_door.draw(_cameraOne, &_toon, &_barrelTexture);
+}
+void MainGame::setToonLighting()
+{
+	_toon.setVec3("lightDir", vec3(0.5f, 0.5f, 0.5f));
 }
 
+void MainGame::setADSLighting()
+{
+	_modelView = transform.GetModel() * _cameraOne.GetView();
+
+	_toon.setMat4("ModelViewMatrix", _modelView);
+	_toon.setMat4("ProjectionMatrix", _cameraOne.GetProjection());
+
+	mat4 normalMatrix = transpose(inverse(_modelView));
+
+	_toon.setMat4("NormalMatrix", normalMatrix);
+
+	_toon.setVec4("Position", vec4(10.0, 10.0, 10.0, 1.0));
+	_toon.setVec3("Intensity", vec3(0.0, 0.0, 0.0));
+
+	_toon.setVec3("ka", vec3(0.5, 0.5, 0.5));
+	_toon.setVec3("kd", vec3(0.5, 0.5, 0.5));
+	_toon.setVec3("ks", vec3(0.5, 0.5, 0.5));
+
+	_toon.setFloat("Shininess", 0.5);
+}
+
+/********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************
+
+glEnableClientState(GL_COLOR_ARRAY);
+//Tells OpenGL which type of polygon should be drawn (triangles, points etc.)
+glBegin(GL_TRIANGLES);
+
+glColor3f(1.0f, 0.5f, 0.5f);
+glVertex2f(0, 0);
+glVertex2f(0, 1);
+glVertex2f(1, 1);
+
+glEnd();*/
 

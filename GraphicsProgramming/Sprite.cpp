@@ -112,7 +112,7 @@ void Sprite::init(float x, float y, float  width, float height)
 
 void Sprite::draw()
 {
-	glDisable(GL_CULL_FACE);
+	//glDisable(GL_CULL_FACE);
 
 	//Tells OpenGL this is the current active buffer
 	glBindBuffer(GL_ARRAY_BUFFER, _spriteVertexBufferObject);

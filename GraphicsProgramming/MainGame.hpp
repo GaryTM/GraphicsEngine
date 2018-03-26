@@ -38,6 +38,8 @@ private:
 	//Used to draw everything required for the program
 	void draw();
 	void CreateTheModels();
+	void setToonLighting();
+	void setADSLighting();
 	//An instance of the window class used for the main game window display
 	Window _gameWindow;
 	//Used to keep track of which state the program is currently in
@@ -49,14 +51,13 @@ private:
 	//An instance of the colour shader which is a mix of the vert and frag shaders
 	Shader _funkyColour;
 	Shader _solidColour;
+	Shader _toon;
 	Shader _textured;
-	Model _barrel;
-	Model _wallTop;
-	Model _wallBottom;
-	Model _woodDoor;
+	Model _door;
 	Audio _audioDevice;
 	CameraOne _cameraOne;
 	Input _input;
+	mat4 _modelView;
 	float _time;
 	float _ticker;
 };

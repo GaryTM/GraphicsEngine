@@ -127,5 +127,17 @@
     <None Include="Shaders\Textured.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Shaders\Toon.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Toon.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\ADS.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\ADS.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

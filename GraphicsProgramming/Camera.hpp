@@ -21,9 +21,19 @@ public:
 		this->_projection = perspective(fieldOfView, aspectRatio, nearClip, farClip);
 	}
 	//A getter for the position of the camera
-	vec3 getPosition()
+	vec3 GetPosition()
 	{
 		return this->_position;
+	}
+	//A matrix which gets the view for the camera
+	inline mat4 GetView() const
+	{
+		return lookAt(_position, _position + _forward, _up);
+	}
+	//A matrix which gets the projection for the camera
+	inline mat4 GetProjection() const
+	{
+		return _projection;
 	}
 	//A matrix which gets the view and projection for the camera
 	inline mat4 GetViewProjection() const

@@ -35,7 +35,7 @@ void Window::initWindow()
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	glEnable(GL_DEPTH_TEST); //enable z-buffering 
-	glEnable(GL_CULL_FACE); //dont draw faces that are not pointing at the camera
+	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
 	/*Sets up the window giving it a title and ensuring it is centered on the x and y axis,
