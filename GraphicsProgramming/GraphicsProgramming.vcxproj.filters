@@ -139,5 +139,11 @@
     <None Include="Shaders\ADS.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Shaders\Blur.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Blur.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

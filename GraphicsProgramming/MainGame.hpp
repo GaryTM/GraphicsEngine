@@ -52,6 +52,7 @@ private:
 	Shader _funkyColour;
 	Shader _solidColour;
 	Shader _toon;
+	Shader _blur;
 	Shader _textured;
 	Model _sofa;
 	Model _singleSofa;

@@ -190,6 +190,8 @@
   <ItemGroup>
     <None Include="Shaders\ADS.frag" />
     <None Include="Shaders\ADS.vert" />
+    <None Include="Shaders\Blur.frag" />
+    <None Include="Shaders\Blur.vert" />
     <None Include="Shaders\FunkyColour.frag" />
     <None Include="Shaders\FunkyColour.vert" />
     <None Include="Shaders\SolidColour.frag" />

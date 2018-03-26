@@ -57,6 +57,7 @@ void MainGame::initShaders()
 	_solidColour.compileShaders("Shaders/SolidColour.vert", "Shaders/SolidColour.frag");
 	_textured.compileShaders("Shaders/Textured.vert", "Shaders/Textured.frag");
 	_toon.compileShaders("Shaders/Toon.vert", "Shaders/Toon.frag");
+	_blur.compileShaders("Shaders/Blur.vert", "Shaders/Blur.frag");
 	//Adding the attributes
 	_funkyColour.createAttribute("vertexPosition");
 	_funkyColour.createAttribute("vertexColour");
@@ -66,6 +67,7 @@ void MainGame::initShaders()
 	_solidColour.linkShaders();
 	_textured.linkShaders();
 	_toon.linkShaders();
+	_blur.linkShaders();
 }
 void MainGame::gameLoop()
 {
@@ -157,6 +159,7 @@ void MainGame::CreateTheModels()
 	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
 	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
+	setToonLighting();
 	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
 	_foldTable.draw(_cameraOne, &_toon, &_barrelTexture);
 
@@ -185,7 +188,7 @@ void MainGame::setADSLighting()
 	_toon.setMat4("NormalMatrix", normalMatrix);
 
 	_toon.setVec4("Position", vec4(10.0, 10.0, 10.0, 1.0));
-	_toon.setVec3("Intensity", vec3(0.0, 0.0, 0.0));
+	_toon.setVec3("Intensity", vec3(10.0, 10.0, 10.0));
 
 	_toon.setVec3("ka", vec3(0.5, 0.5, 0.5));
 	_toon.setVec3("kd", vec3(0.5, 0.5, 0.5));
