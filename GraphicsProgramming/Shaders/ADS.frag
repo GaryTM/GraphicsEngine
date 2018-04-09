@@ -31,7 +31,8 @@ void phongModel( vec3 pos, vec3 norm, out vec3 ambAndDiff, out vec3 spec ) {
 void main() {
 vec3 ambAndDiff, spec;
 
-vec4 texColor = texture2D( diffuse, TexCoord );
+//vec4 texColor = texture2D(diffuse, TexCoord );
+vec4 texColor = vec4(1.0,1.0,1.0,1.0);
 
 phongModel(Position, Normal, ambAndDiff, spec);
 

@@ -58,13 +58,7 @@ void MainGame::initShaders()
 	_textured.compileShaders("Shaders/Textured.vert", "Shaders/Textured.frag");
 	_toon.compileShaders("Shaders/Toon.vert", "Shaders/Toon.frag");
 	_blur.compileShaders("Shaders/Blur.vert", "Shaders/Blur.frag");
-	//Adding the attributes
-	_funkyColour.createAttribute("vertexPosition");
-	_funkyColour.createAttribute("vertexColour");
-	_blur.createAttribute("position");
-	_blur.createAttribute("texCoord");
-	_toon.createAttribute("VertexPosition");
-	_toon.createAttribute("VertexNormal");
+	_ADS.compileShaders("Shaders/ADS.vert", "Shaders/ADS.frag");
 
 	//Linking the shaders
 	_funkyColour.linkShaders();
@@ -72,6 +66,7 @@ void MainGame::initShaders()
 	_textured.linkShaders();
 	_toon.linkShaders();
 	_blur.linkShaders();
+	_ADS.linkShaders();
 }
 void MainGame::gameLoop()
 {
@@ -137,11 +132,6 @@ void MainGame::draw()
 	float _sinCounter = sinf(_ticker);
 	float _absSinCounter = abs(_sinCounter);
 
-	//Setting the uniform before drawing
-	GLuint timeLocation = _funkyColour.getUniformLocation("time");
-	//Sending the variable (1f symbolises there is 1 Float)
-	glUniform1f(timeLocation, _time);
-
 	CreateTheModels();
 
 	_ticker = _ticker + 0.01f;
@@ -155,7 +145,7 @@ void MainGame::CreateTheModels()
 	_sofa.transform.SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	//setToonLighting();
+	setToonLighting();
 	_sofa.updateCollisionSphere(_sofa.transform.GetPosition(), 0.50f);
 	_sofa.draw(_cameraOne, &_toon, &_barrelTexture);
 
@@ -163,42 +153,59 @@ void MainGame::CreateTheModels()
 	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
 	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	//setToonLighting();
+	setADSLighting();
 	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
-	_foldTable.draw(_cameraOne, &_textured, &_barrelTexture);
+	_foldTable.draw(_cameraOne, &_ADS, &_barrelTexture);
 
 	//Draw the single sofa
 	_singleSofa.transform.SetPosition(vec3(-1.5f, 0.0f, 0.0f));
 	_singleSofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_singleSofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	//setToonLighting();
+	setToonLighting();
 	_singleSofa.updateCollisionSphere(_singleSofa.transform.GetPosition(), 0.50f);
 	_singleSofa.draw(_cameraOne, &_toon, &_barrelTexture);
 }
 void MainGame::setToonLighting()
 {
+	_toon.bindShader();
 	_toon.setVec3("lightDir", vec3(1.0f, 1.0f, 1.0f));
 }
-
+void MainGame::setFunkyLighting()
+{
+	_funkyColour.bindShader();
+	//Setting the uniform before drawing
+	GLuint timeLocation = _funkyColour.getUniformLocation("time");
+	//Sending the variable (1f symbolises there is 1 Float)
+	glUniform1f(timeLocation, _time);
+}
+void MainGame::setBlurLighting()
+{
+	_blur.bindShader();
+	_blur.setVec4("InnerColor", 1.0, 0.0, 0.0, 1.0);
+	_blur.setVec4("OuterColor",  0.0, 1.0, 0.0, 1.0);
+	_blur.setFloat("RadiusInner", 0.5f);
+	_blur.setFloat("RadiusOuter", 0.5f);
+}
 void MainGame::setADSLighting()
 {
+	_ADS.bindShader();
 	_modelView = transform.GetModel() * _cameraOne.GetView();
 
-	_toon.setMat4("ModelViewMatrix", _modelView);
-	_toon.setMat4("ProjectionMatrix", _cameraOne.GetProjection());
+	_ADS.setMat4("ModelViewMatrix", _modelView);
+	_ADS.setMat4("ProjectionMatrix", _cameraOne.GetProjection());
 
 	mat4 normalMatrix = transpose(inverse(_modelView));
 
-	_toon.setMat4("NormalMatrix", normalMatrix);
+	_ADS.setMat4("NormalMatrix", normalMatrix);
 
-	_toon.setVec4("Position", vec4(10.0, 10.0, 10.0, 1.0));
-	_toon.setVec3("Intensity", vec3(10.0, 10.0, 10.0));
+	_ADS.setVec4("Position", vec4(0.0, 1.0, 1.0, 1.0));
+	_ADS.setVec3("Intensity", vec3(10.0, 10.0, 10.0));
 
-	_toon.setVec3("ka", vec3(0.5, 0.5, 0.5));
-	_toon.setVec3("kd", vec3(0.5, 0.5, 0.5));
-	_toon.setVec3("ks", vec3(0.5, 0.5, 0.5));
+	_ADS.setVec3("ka", vec3(0.5, 0.5, 0.5));
+	_ADS.setVec3("kd", vec3(0.5, 0.5, 0.5));
+	_ADS.setVec3("ks", vec3(0.5, 0.5, 0.5));
 
-	_toon.setFloat("Shininess", 0.5);
+	_ADS.setFloat("Shininess", 0.5);
 }
 
 /********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************

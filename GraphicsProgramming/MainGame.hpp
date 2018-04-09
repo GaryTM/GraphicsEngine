@@ -39,6 +39,8 @@ private:
 	void draw();
 	void CreateTheModels();
 	void setToonLighting();
+	void setFunkyLighting();
+	void setBlurLighting();
 	void setADSLighting();
 	//An instance of the window class used for the main game window display
 	Window _gameWindow;

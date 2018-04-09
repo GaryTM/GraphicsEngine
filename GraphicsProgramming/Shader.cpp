@@ -84,22 +84,12 @@ void Shader::createAttribute(const string& attributeName)
 void Shader::bindShader()
 {
 	glUseProgram(_shaderProgram);
-	//Loops through the attributes and enables the ones that are bound
-	for (int i = 0; i < _numAttributes; i++)
-	{
-		//These must be enabled or the shader will not be able to use them
-		glEnableVertexAttribArray(i);
-	}
 }
 void Shader::unbindShader()
 {
 	//Setting this to 0 will unbind the program
 	glUseProgram(0);
 
-	for (int i = 0; i < _numAttributes; i++)
-	{
-		glDisableVertexAttribArray(i);
-	}
 }
 //Gets the location of the uniform with some error checking to avoid invalidity
 GLint Shader::getUniformLocation(const string uniformName)
