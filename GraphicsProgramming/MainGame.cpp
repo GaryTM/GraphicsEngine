@@ -61,6 +61,10 @@ void MainGame::initShaders()
 	//Adding the attributes
 	_funkyColour.createAttribute("vertexPosition");
 	_funkyColour.createAttribute("vertexColour");
+	_blur.createAttribute("position");
+	_blur.createAttribute("texCoord");
+	_toon.createAttribute("VertexPosition");
+	_toon.createAttribute("VertexNormal");
 
 	//Linking the shaders
 	_funkyColour.linkShaders();
@@ -151,7 +155,7 @@ void MainGame::CreateTheModels()
 	_sofa.transform.SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setToonLighting();
+	//setToonLighting();
 	_sofa.updateCollisionSphere(_sofa.transform.GetPosition(), 0.50f);
 	_sofa.draw(_cameraOne, &_toon, &_barrelTexture);
 
@@ -159,15 +163,15 @@ void MainGame::CreateTheModels()
 	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
 	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setToonLighting();
+	//setToonLighting();
 	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
-	_foldTable.draw(_cameraOne, &_toon, &_barrelTexture);
+	_foldTable.draw(_cameraOne, &_textured, &_barrelTexture);
 
 	//Draw the single sofa
 	_singleSofa.transform.SetPosition(vec3(-1.5f, 0.0f, 0.0f));
 	_singleSofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_singleSofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setToonLighting();
+	//setToonLighting();
 	_singleSofa.updateCollisionSphere(_singleSofa.transform.GetPosition(), 0.50f);
 	_singleSofa.draw(_cameraOne, &_toon, &_barrelTexture);
 }
