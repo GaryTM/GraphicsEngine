@@ -37,6 +37,7 @@ void MainGame::initSystems()
 	_sofa.loadModel("Models/sofa.obj");
 	_singleSofa.loadModel("Models/sofa_single.obj");
 	_foldTable.loadModel("Models/table_fold.obj");
+	_book.loadModel("Models/book.obj");
 
 	//Textures
 	_woodDoorTexture.init("Textures/WoodDoorTexture.jpg");
@@ -158,12 +159,20 @@ void MainGame::CreateTheModels()
 	_foldTable.draw(_cameraOne, &_ADS, &_barrelTexture);
 
 	//Draw the single sofa
-	_singleSofa.transform.SetPosition(vec3(-1.5f, 0.0f, 0.0f));
+	_singleSofa.transform.SetPosition(vec3(-1.75f, 0.0f, 0.0f));
 	_singleSofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_singleSofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
 	setToonLighting();
 	_singleSofa.updateCollisionSphere(_singleSofa.transform.GetPosition(), 0.50f);
 	_singleSofa.draw(_cameraOne, &_toon, &_barrelTexture);
+
+	//A book
+	_book.transform.SetPosition(vec3(0.5f, 0.0f, 0.5f));
+	_book.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
+	_book.transform.SetScale(vec3(3.0f, 3.0f, 3.0f));
+	setFunkyLighting();
+	_book.updateCollisionSphere(_book.transform.GetPosition(), 0.50f);
+	_book.draw(_cameraOne, &_funkyColour, &_barrelTexture);
 }
 void MainGame::setToonLighting()
 {

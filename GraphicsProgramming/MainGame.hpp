@@ -60,6 +60,7 @@ private:
 	Model _sofa;
 	Model _singleSofa;
 	Model _foldTable;
+	Model _book;
 	Audio _audioDevice;
 	CameraOne _cameraOne;
 	Input _input;

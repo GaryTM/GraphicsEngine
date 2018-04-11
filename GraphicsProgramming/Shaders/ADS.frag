@@ -22,7 +22,8 @@ uniform MaterialInfo Material;
 
 layout( location = 0 ) out vec4 FragColor;
 
-void phongModel( vec3 pos, vec3 norm, out vec3 ambAndDiff, out vec3 spec ) {
+void phongModel( vec3 pos, vec3 norm, out vec3 ambAndDiff, out vec3 spec ) 
+{
 // Compute the ADS shading model here, return ambient
 // and diffuse color in ambAndDiff, and return specular
 // color in spec
