@@ -41,6 +41,7 @@ private:
 	void setToonLighting();
 	void setFunkyLighting();
 	void setBlurLighting();
+	void setRimShading();
 	void setADSLighting();
 	//An instance of the window class used for the main game window display
 	Window _gameWindow;
@@ -56,6 +57,8 @@ private:
 	Shader _toon;
 	Shader _blur;
 	Shader _ADS;
+	Shader _rim;
+	//Shader _fog;
 	Shader _textured;
 	Model _sofa;
 	Model _singleSofa;

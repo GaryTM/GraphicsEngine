@@ -1,5 +1,4 @@
 #include <glm\gtc\type_ptr.hpp>
-
 #include "Model.hpp"
 #include "Errors.hpp"
 
@@ -94,12 +93,11 @@ void Model::draw()
 void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture)
 {
 	shader->bindShader();
-
-	GLint transformLocation = shader->getUniformLocation("transform");
+	GLuint transformLocation = shader->getUniformLocation("transform");
 	mat4 mvp = (mainCamera.GetViewProjection() * transform.GetModel());
+	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, value_ptr(mvp));
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glUniformMatrix4fv(transformLocation, 1, GLU_FALSE, value_ptr(mvp));
 	texture->bindTexture(0);
 	draw();
 

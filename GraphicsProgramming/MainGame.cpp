@@ -60,6 +60,8 @@ void MainGame::initShaders()
 	_toon.compileShaders("Shaders/Toon.vert", "Shaders/Toon.frag");
 	_blur.compileShaders("Shaders/Blur.vert", "Shaders/Blur.frag");
 	_ADS.compileShaders("Shaders/ADS.vert", "Shaders/ADS.frag");
+	_rim.compileShaders("Shaders/Rim.vert", "Shaders/Rim.frag");
+	//_fog.compileShaders("Shaders/Fog.vert", "Shaders/Fog.frag");
 
 	//Linking the shaders
 	_funkyColour.linkShaders();
@@ -68,6 +70,8 @@ void MainGame::initShaders()
 	_toon.linkShaders();
 	_blur.linkShaders();
 	_ADS.linkShaders();
+	_rim.linkShaders();
+	//_fog.linkShaders();
 }
 void MainGame::gameLoop()
 {
@@ -134,7 +138,6 @@ void MainGame::draw()
 	float _absSinCounter = abs(_sinCounter);
 
 	CreateTheModels();
-
 	_ticker = _ticker + 0.01f;
 
 	_gameWindow.swapBuffer();
@@ -146,17 +149,17 @@ void MainGame::CreateTheModels()
 	_sofa.transform.SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setToonLighting();
+	setADSLighting();
 	_sofa.updateCollisionSphere(_sofa.transform.GetPosition(), 0.50f);
-	_sofa.draw(_cameraOne, &_toon, &_barrelTexture);
+	_sofa.draw(_cameraOne, &_ADS, &_barrelTexture);
 
 	//Draw the foldable table
 	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
 	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setADSLighting();
+	setToonLighting();
 	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
-	_foldTable.draw(_cameraOne, &_ADS, &_barrelTexture);
+	_foldTable.draw(_cameraOne, &_toon, &_barrelTexture);
 
 	//Draw the single sofa
 	_singleSofa.transform.SetPosition(vec3(-1.75f, 0.0f, 0.0f));
@@ -195,6 +198,11 @@ void MainGame::setBlurLighting()
 	_blur.setFloat("RadiusInner", 0.5f);
 	_blur.setFloat("RadiusOuter", 0.5f);
 }
+void MainGame::setRimShading()
+{	
+	_rim.setMat4("u_vm", _cameraOne.GetView());
+	_rim.setMat4("u_pm", _cameraOne.GetProjection());
+}
 void MainGame::setADSLighting()
 {
 	_ADS.bindShader();
@@ -207,7 +215,7 @@ void MainGame::setADSLighting()
 
 	_ADS.setMat4("NormalMatrix", normalMatrix);
 
-	_ADS.setVec4("Position", vec4(0.0, 1.0, 1.0, 1.0));
+	_ADS.setVec4("Position", vec4(0.0f, 1.0f, 3.0f, 1.0f));
 	_ADS.setVec3("Intensity", vec3(10.0, 10.0, 10.0));
 
 	_ADS.setVec3("ka", vec3(0.5, 0.5, 0.5));

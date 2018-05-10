@@ -192,8 +192,12 @@
     <None Include="Shaders\ADS.vert" />
     <None Include="Shaders\Blur.frag" />
     <None Include="Shaders\Blur.vert" />
+    <None Include="Shaders\Fog.frag" />
+    <None Include="Shaders\Fog.vert" />
     <None Include="Shaders\FunkyColour.frag" />
     <None Include="Shaders\FunkyColour.vert" />
+    <None Include="Shaders\Rim.frag" />
+    <None Include="Shaders\Rim.vert" />
     <None Include="Shaders\SolidColour.frag" />
     <None Include="Shaders\SolidColour.vert" />
     <None Include="Shaders\Textured.frag" />

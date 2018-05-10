@@ -145,5 +145,17 @@
     <None Include="Shaders\Blur.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Shaders\Fog.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Fog.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Rim.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Rim.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
