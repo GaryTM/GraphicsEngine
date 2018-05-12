@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Model.hpp"
-
+/*Aserived class that would be used for moving models*/
 class MoveableModel : public Model
 {
 public:

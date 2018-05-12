@@ -7,7 +7,7 @@ using namespace std;
 using namespace glm;
 
 Transform transform;
-/*These privates variables are being initialised using an inistialisation list
+/*These private variables are being initialised using an inistialisation list
 which only works for constructors, but is faster than adding
 time = 0.0f; etc. to the body of the constructor. REMEMBER THIS!*/
 MainGame::MainGame() :
@@ -24,9 +24,6 @@ MainGame::~MainGame()
 void MainGame::run()
 {
 	initSystems();
-
-	//_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
-
 	gameLoop();
 }
 //Initialise the required systems. Load the window, models, camera, shaders etc.
@@ -43,6 +40,8 @@ void MainGame::initSystems()
 	_woodDoorTexture.init("Textures/WoodDoorTexture.jpg");
 	_barrelTexture.init("Textures/BarrelTexture.jpg");
 	_wallTexture.init("Textures/WallTexture.jpg");
+
+	setADSLighting();
 
 	_cameraOne.initCamera(vec3(0.0f, 1.25f, -3.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	_cameraOne.Pitch(0.35f);
@@ -80,7 +79,7 @@ void MainGame::gameLoop()
 	{
 		processInput();
 		_time += 0.1f;
-		_cameraOne.update(_sofa, _gameWindow, _input);
+		_cameraOne.update(_book, _gameWindow, _input);
 		draw();
 	}
 }
@@ -132,8 +131,6 @@ void MainGame::draw()
 {
 	_gameWindow.clearWindow(1.0f, 1.0f, 1.0f, 1.0f);
 
-	//_sprite.draw();
-
 	float _sinCounter = sinf(_ticker);
 	float _absSinCounter = abs(_sinCounter);
 
@@ -145,7 +142,7 @@ void MainGame::draw()
 
 void MainGame::CreateTheModels()
 {
-	//Draw the sofa
+	//Draw the sofa and apply the Phong lighting model to it along with the ADS shader
 	_sofa.transform.SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_sofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
@@ -153,15 +150,15 @@ void MainGame::CreateTheModels()
 	_sofa.updateCollisionSphere(_sofa.transform.GetPosition(), 0.50f);
 	_sofa.draw(_cameraOne, &_ADS, &_barrelTexture);
 
-	//Draw the foldable table
-	_foldTable.transform.SetPosition(vec3(0.25f, 0.0f, -1.0f));
+	//Draw the foldable table and apply blur shader
+	_foldTable.transform.SetPosition(vec3(2.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_foldTable.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
-	setToonLighting();
+	setBlurLighting();
 	_foldTable.updateCollisionSphere(_foldTable.transform.GetPosition(), 0.50f);
-	_foldTable.draw(_cameraOne, &_toon, &_barrelTexture);
+	_foldTable.draw(_cameraOne, &_blur, &_barrelTexture);
 
-	//Draw the single sofa
+	//Draw the single sofa and apply toon shading
 	_singleSofa.transform.SetPosition(vec3(-1.75f, 0.0f, 0.0f));
 	_singleSofa.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
 	_singleSofa.transform.SetScale(vec3(1.0f, 1.0f, 1.0f));
@@ -169,19 +166,21 @@ void MainGame::CreateTheModels()
 	_singleSofa.updateCollisionSphere(_singleSofa.transform.GetPosition(), 0.50f);
 	_singleSofa.draw(_cameraOne, &_toon, &_barrelTexture);
 
-	//A book
-	_book.transform.SetPosition(vec3(0.5f, 0.0f, 0.5f));
+	//Draw a book and apply the seizure inducing shader to it
+	_book.transform.SetPosition(vec3(-0.5f, -0.5f, 0.0f));
 	_book.transform.SetRotation(vec3(0.0f, 0.0f, 0.0f));
-	_book.transform.SetScale(vec3(3.0f, 3.0f, 3.0f));
+	_book.transform.SetScale(vec3(2.0f, 2.0f, 2.0f));
 	setFunkyLighting();
 	_book.updateCollisionSphere(_book.transform.GetPosition(), 0.50f);
 	_book.draw(_cameraOne, &_funkyColour, &_barrelTexture);
 }
+//Setting the uniforms inside the toon shader
 void MainGame::setToonLighting()
 {
 	_toon.bindShader();
 	_toon.setVec3("lightDir", vec3(1.0f, 1.0f, 1.0f));
 }
+//Same for funky
 void MainGame::setFunkyLighting()
 {
 	_funkyColour.bindShader();
@@ -190,19 +189,22 @@ void MainGame::setFunkyLighting()
 	//Sending the variable (1f symbolises there is 1 Float)
 	glUniform1f(timeLocation, _time);
 }
+//And again...
 void MainGame::setBlurLighting()
 {
 	_blur.bindShader();
-	_blur.setVec4("InnerColor", 1.0, 0.0, 0.0, 1.0);
-	_blur.setVec4("OuterColor",  0.0, 1.0, 0.0, 1.0);
-	_blur.setFloat("RadiusInner", 0.5f);
-	_blur.setFloat("RadiusOuter", 0.5f);
+	_blur.setVec4("InnerColor", 0.0f, 6.0f, 1.0f, 1.0f);
+	_blur.setVec4("OuterColor",  12.0f, 0.0f, 0.0f, 1.0f);
+	_blur.setFloat("RadiusInner", 1.5f);
+	_blur.setFloat("RadiusOuter", 5.0f);
 }
+//....
 void MainGame::setRimShading()
 {	
 	_rim.setMat4("u_vm", _cameraOne.GetView());
 	_rim.setMat4("u_pm", _cameraOne.GetProjection());
 }
+//..
 void MainGame::setADSLighting()
 {
 	_ADS.bindShader();
@@ -214,15 +216,14 @@ void MainGame::setADSLighting()
 	mat4 normalMatrix = transpose(inverse(_modelView));
 
 	_ADS.setMat4("NormalMatrix", normalMatrix);
-
-	_ADS.setVec4("Position", vec4(0.0f, 1.0f, 3.0f, 1.0f));
-	_ADS.setVec3("Intensity", vec3(10.0, 10.0, 10.0));
-
-	_ADS.setVec3("ka", vec3(0.5, 0.5, 0.5));
-	_ADS.setVec3("kd", vec3(0.5, 0.5, 0.5));
-	_ADS.setVec3("ks", vec3(0.5, 0.5, 0.5));
-
-	_ADS.setFloat("Shininess", 0.5);
+	_ADS.setVec4("Light.Position", vec4(0.0f, 3.0f, 2.0f, 1.0f));
+	_ADS.setVec3("Light.La", vec3(0.5f, 0.5f, 0.5f));
+	_ADS.setVec3("Light.Ld", vec3(2.0f, 2.0f, 2.0f));
+	_ADS.setVec3("Light.Ls", vec3(0.9f, 0.9f, 0.9f));
+	_ADS.setVec3("Material.Ka", vec3(1.0f, 2.5f, 1.0f));
+	_ADS.setVec3("Material.Kd", vec3(3.0f, 1.0f, 1.0f));
+	_ADS.setVec3("Material.Ks", vec3(3.0f, 3.0f, 3.0f));
+	_ADS.setFloat("Shininess", 3.0f);
 }
 
 /********************************** IMMEDIATE MODE. GOOD TO KNOW, BUT SHOULD BE AVOIDED **********************************

@@ -8,12 +8,12 @@ Window::Window() :
 }
 Window::~Window()
 {
-	SDL_GL_DeleteContext(_glContext); // delete context
-	SDL_DestroyWindow(_gameWindow); // detete window (make sure to delete the context and the window in the opposite order of creation in initDisplay())
+	SDL_GL_DeleteContext(_glContext);
+	SDL_DestroyWindow(_gameWindow);
 	SDL_Quit();
 }
-
-float Window::getWidth() { return _screenWidth; } //getters
+//Getters for the screen width and height
+float Window::getWidth() { return _screenWidth; } 
 float Window::getHeight() { return _screenHeight; }
 
 void Window::swapBuffer()
@@ -25,8 +25,9 @@ void Window::swapBuffer()
 
 void Window::clearWindow(float r, float g, float b, float a)
 {
+	//Setting the screen to a flat colour and clearing the depth and colour buffers
 	glClearColor(0.0f, 0.5f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear colour and depth buffer - set colour to colour defined in glClearColor
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 }
 
 void Window::initWindow()

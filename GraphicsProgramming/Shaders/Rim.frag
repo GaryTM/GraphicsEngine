@@ -10,11 +10,11 @@ in vec4 v_pos;
  
 void main() {
  
-  vec3 n = normalize(mat3(u_vm) * v_norm);      // convert normal to view space
-  vec3 p = vec3((u_pm) * v_pos);                // position in clip space
-  vec3 v = normalize(p);                        // normalised eye vector
-  float vdn = 1.0 - max(dot(v, n), 1.0);        // the rim contribution
+  vec3 n = normalize(mat3(u_vm) * v_norm); 
+  vec3 p = vec3((u_pm) * v_pos);                
+  vec3 v = normalize(p);                       
+  float vdn = 1.0 - max(dot(v, n), 1.0);      
  
   fragcolor.a = 0.6;
-  fragcolor.rgb = vec3(smoothstep(0.4, 12.0, vdn));
+  fragcolor.rgb = vec3(smoothstep(0.4, 15.0, vdn));
 }

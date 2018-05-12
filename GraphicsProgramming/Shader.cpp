@@ -79,10 +79,12 @@ void Shader::linkShaders()
 }
 void Shader::createAttribute(const string& attributeName)
 {
+	//Binding the attribute locations 
 	glBindAttribLocation(_shaderProgram, _numAttributes++, attributeName.c_str());
 }
 void Shader::bindShader()
 {
+	//Allows shaders to be bound using their shader program id
 	glUseProgram(_shaderProgram);
 }
 void Shader::unbindShader()

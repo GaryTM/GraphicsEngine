@@ -100,6 +100,5 @@ void Model::draw(const Camera& mainCamera, Shader* shader, Texture* texture)
 	glCullFace(GL_BACK);
 	texture->bindTexture(0);
 	draw();
-
 	shader->unbindShader();
 }

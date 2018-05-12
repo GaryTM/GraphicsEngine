@@ -6,6 +6,7 @@
 #include "Shader.hpp"
 #include "Sprite.hpp"
 #include "Model.hpp"
+#include "MoveableModel.hpp"
 #include "Texture.hpp"
 #include "Transform.hpp"
 #include "CameraOne.hpp"
@@ -51,14 +52,14 @@ private:
 	Texture _barrelTexture;
 	Texture _wallTexture;
 	Texture _woodDoorTexture;
-	//An instance of the colour shader which is a mix of the vert and frag shaders
+	//An instance of the shader which is a mix of the vert and frag shaders
 	Shader _funkyColour;
 	Shader _solidColour;
 	Shader _toon;
 	Shader _blur;
 	Shader _ADS;
 	Shader _rim;
-	//Shader _fog;
+	Shader _fog;
 	Shader _textured;
 	Model _sofa;
 	Model _singleSofa;
