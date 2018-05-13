@@ -41,13 +41,20 @@ void MainGame::initSystems()
 	_barrelTexture.init("Textures/BarrelTexture.jpg");
 	_wallTexture.init("Textures/WallTexture.jpg");
 
-	setADSLighting();
+	//setADSLighting();
 
 	_cameraOne.initCamera(vec3(0.0f, 1.25f, -3.0f), 70.f, (float)_gameWindow.getWidth() / _gameWindow.getHeight(), 0.01f, 1000.0f);
 	_cameraOne.Pitch(0.35f);
 	_ticker = 0.75f;
 	//Initialising all shaders
 	initShaders();
+
+	cout << "Use the num pad to move the camera around the 'book.'" << endl;
+	cout << "Holding backspace slows the 'funky colour' effect." << endl;
+	cout << "Far left has the blur shading (doesn't look as good as expected, but compiles and works.)" << endl;
+	cout << "Next has the ADS lighting attached. Changing the intensity/position of the light changes the colour of the model." << endl;
+	cout << "The small sofa is using the toon shader" << endl;
+	cout << "The 'book' is using a bespoke shader which may cause seizures." << endl;
 }
 
 void MainGame::initShaders()
@@ -116,11 +123,6 @@ void MainGame::processInput()
 		case SDL_QUIT:
 			//Exit the program if SDL_QUIT is called (the user closes the program)
 			_currentGameState = GameState::EXIT;
-			break;
-
-		case SDL_MOUSEMOTION:
-			cout << evnt.motion.x << " " << evnt.motion.y << endl;
-
 			break;
 		}
 	}
